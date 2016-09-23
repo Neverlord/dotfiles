@@ -5,14 +5,27 @@ Feel free to copy stuff you like.
 
 # Setup a New Home Directory (Overrides Local Files!)
 
-git init . ; git remote add origin https://github.com/Neverlord/dotfiles.git ; git fetch ; git checkout -f master
+```
+git init . && git remote add origin https://github.com/Neverlord/dotfiles.git && git fetch && git checkout -f master
+```
 
 # Software Setup (macOS)
 
-brew install vim --override-system-vim
+```
+brew install vim
 brew install macvim
+brew install clang-format
+```
 
-# First-time setup vor VIM
+# Git Setup
 
-PlugInstall
+```
+git config --global core.editor /usr/local/bin/vim
+```
+
+# VIM Setup
+
+```
+vim -c PlugInstall
+```
 
