@@ -35,7 +35,7 @@ scriptencoding utf-8
 set makeprg=ninja
 
 " rebind CTRL+B to build current project
-map <C-B> :make -C build<CR>
+map <C-B> :wa<CR>:make -C build<CR>
 
 " rebind CTRL+N for jumping to the next error/warning
 map <C-N> :cnext<CR>
