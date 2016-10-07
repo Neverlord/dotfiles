@@ -4,16 +4,22 @@ alias "gpm=git submodule foreach git checkout master"
 alias "gst=git status && git submodule foreach git status"
 alias "gph=git push && git submodule foreach git push"
 
+# convenience alias for building in "build" subdirectory
+alias "sn=ninja -C build"
+
+# tell CAF's configure script we're using ninja instead of make
+export DEFAULT_CMAKE_GENERATOR="Ninja"
+
 # tell BibteX where to find bibliography databases
-export BIBINPUTS=$HOME/papers/bib
+export BIBINPUTS="$HOME/papers/bib"
 
 # make sure our language is US english with UTF-8 encoding
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
 
 # colored ls output
 export CLICOLOR=1
-export LSCOLORS=DxGxcxdxCxegedabagacad
+export LSCOLORS="DxGxcxdxCxegedabagacad"
 
 # longer history
 export HISTFILESIZE=50000000

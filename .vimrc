@@ -37,6 +37,9 @@ set makeprg=ninja
 " rebind CTRL+B to build current project
 map <C-B> :wa<CR>:make -C build<CR>
 
+" rebind CTRL+M to open build messages
+map <C-M> :copen<CR><C-W><S-J>
+
 " rebind CTRL+N for jumping to the next error/warning
 map <C-N> :cnext<CR>
 
@@ -62,7 +65,7 @@ if has('gui_running')
     set columns=80
     set lines=25
     set guioptions-=T   " Remove the toolbar.
-    set guifont=Monaco:h11
+    set guifont="Anonymous Pro":h14
     "set transparency=5
 
     " Disable MacVim-specific Cmd/Alt key mappings.
@@ -90,7 +93,7 @@ set expandtab           " Expand tabs to spaces.
 set tabstop=2           " number of spaces for a <Tab>.
 "set softtabstop=2       " Number of spaces that a <Tab> counts for.
 set shiftwidth=2        " Tab indention
-set textwidth=79        " Text width
+"set textwidth=79        " Text width
 
 " Indentation Tweaks.
 " l1  = align with case label isntead of steatement after it in the same line.
@@ -121,6 +124,9 @@ nnoremap <CR> :noh<CR><CR>
 " Toggle list mode (display unprintable characters).
 nnoremap <F11> :set list!<CR>
 
+" avoid hitting <ESC> dozens of times a day
+inoremap jk <ESC>
+
 " Toggle paste mode.
 set pastetoggle=<F12>
 
@@ -148,6 +154,19 @@ nnoremap <expr> <leader>p '`[' . strpart(getregtype(), 0, 1) . '`]'
 " =============================================================================
 "                               Custom Functions
 " =============================================================================
+
+" Find a string in all *.hpp and *.cpp files
+function! F(what)
+  silent execute 'grep -R --include="*.cpp" --include="*.hpp" "' . a:what . '" .'
+  execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
+  execute "normal! :redraw!\<CR>"
+endfunction
+
+command! -nargs=* Find call F('<args>')
+
+" map CTRL+F to ':Find ''
+map <C-F> <ESC>:Find 
+imap <C-F> <ESC>:Find 
 
 function! Preserve(command)
   " Preparation: save last search, and cursor position.

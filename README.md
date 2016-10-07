@@ -13,6 +13,7 @@ git init . && git remote add origin https://github.com/Neverlord/dotfiles.git &&
 
 ```
 brew install vim
+brew install ninja
 brew install macvim
 brew install clang-format
 ```
