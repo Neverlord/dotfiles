@@ -36,6 +36,7 @@ set makeprg=ninja
 
 " rebind CTRL+B to build current project
 map <C-B> :wa<CR>:make -C build<CR>
+inoremap <C-B> <ESC>:wa<CR>:make -C build<CR>
 
 " rebind CTRL+M to open build messages
 map <C-M> :copen<CR><C-W><S-J>
@@ -312,6 +313,9 @@ Plug 'kien/ctrlp.vim'
 " auto-completion for brackets
 Plug 'jiangmiao/auto-pairs'
 
+" allows to easily add parens or quotes around selected text
+Plug 'tpope/vim-surround'
+
 " code-completion engine
 function! BuildYCM(info)
   " info is a dictionary with 3 fields
@@ -323,6 +327,9 @@ function! BuildYCM(info)
     endif
     endfunction
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+
+" CTRLP config
+let g:ctrlp_custom_ignore = { 'dir': '/build/' }
 
 " done
 call plug#end()
