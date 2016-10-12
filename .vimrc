@@ -39,7 +39,7 @@ map <C-B> :wa<CR>:make -C build<CR>
 inoremap <C-B> <ESC>:wa<CR>:make -C build<CR>
 
 " rebind CTRL+M to open build messages
-map <C-M> :copen<CR><C-W><S-J>
+noremap <S-B> :copen<CR><C-W><S-J>
 
 " rebind CTRL+N for jumping to the next error/warning
 map <C-N> :cnext<CR>
