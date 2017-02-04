@@ -25,6 +25,10 @@ set viminfo='20,\"500
 " No header when printing.
 set printoptions+=header:0
 
+" No audible bell
+set visualbell
+set t_vb=
+
 scriptencoding utf-8
 
 " =============================================================================
@@ -35,8 +39,8 @@ scriptencoding utf-8
 set makeprg=ninja
 
 " rebind CTRL+B to build current project
-map <C-B> :wa<CR>:make -C build<CR>
-inoremap <C-B> <ESC>:wa<CR>:make -C build<CR>
+map <C-B> :wa<CR>:make! -C build<CR>
+inoremap <C-B> <ESC>:wa<CR>:make! -C build<CR>
 
 " rebind CTRL+M to open build messages
 noremap <S-B> :copen<CR><C-W><S-J>
@@ -61,20 +65,21 @@ set ruler               " Show the cursor position all the time.
 set showbreak=…         " Highlight non-wrapped lines.
 set showcmd             " Display incomplete command in bottom right corner.
 set relativenumber
+set number
 
 if has('gui_running')
-    set columns=80
-    set lines=25
-    set guioptions-=T   " Remove the toolbar.
-    set guifont="Anonymous Pro":h14
-    "set transparency=5
+  set columns=80
+  set lines=25
+  set guioptions-=T   " Remove the toolbar.
+  set guifont="Anonymous Pro":h14
+  "set transparency=5
 
-    " Disable MacVim-specific Cmd/Alt key mappings.
-    if has("gui_macvim")
-      let macvim_skip_cmd_opt_movement = 1
-    endif
+  " Disable MacVim-specific Cmd/Alt key mappings.
+  if has("gui_macvim")
+    let macvim_skip_cmd_opt_movement = 1
+  endif
 else
-    set t_Co=256        " We use 256 color terminal emulators these days.
+  set t_Co=256        " We use 256 color terminal emulators these days.
 endif
 
 " Folding
@@ -315,6 +320,9 @@ Plug 'jiangmiao/auto-pairs'
 
 " allows to easily add parens or quotes around selected text
 Plug 'tpope/vim-surround'
+
+" allows swapping contents of splits
+Plug 'wesQ3/vim-windowswap'
 
 " code-completion engine
 function! BuildYCM(info)
