@@ -38,6 +38,10 @@ scriptencoding utf-8
 " rebind :make
 set makeprg=ninja
 
+" =============================================================================
+"                             Custom key binding
+" =============================================================================
+
 " rebind CTRL+B to build current project
 map <C-B> :wa<CR>:make! -C build<CR>
 inoremap <C-B> <ESC>:wa<CR>:make! -C build<CR>
@@ -48,18 +52,19 @@ noremap <S-B> :copen<CR><C-W><S-J>
 " rebind CTRL+N for jumping to the next error/warning
 map <C-N> :cnext<CR>
 
-" =============================================================================
-"                                   Styling
-" =============================================================================
+" rebind CTRL+L for applying Clang-suggested fixes
+map <C-L> :YcmCompleter FixIt<CR>
+inoremap <C-L> :YcmCompleter FixIt<CR>
 
+" rebind CTRL+K for auto-formatting
 map <C-K> :pyf ~/.vim/modules/clang-format.py<CR>
-set colorcolumn=80
 
 " =============================================================================
 "                                   Styling
 " =============================================================================
 
-set background=dark     " Syntax highlighting for a dark terminal background.
+set colorcolumn=80      " Draw a line at 80 character limit"
+set background=light    " Syntax highlighting for a bright terminal background.
 set hlsearch            " Highlight search results.
 set ruler               " Show the cursor position all the time.
 set showbreak=…         " Highlight non-wrapped lines.
@@ -323,6 +328,9 @@ Plug 'tpope/vim-surround'
 
 " allows swapping contents of splits
 Plug 'wesQ3/vim-windowswap'
+
+" allows builds in the background via :Make and :Dispatch
+Plug 'tpope/vim-dispatch'
 
 " code-completion engine
 function! BuildYCM(info)

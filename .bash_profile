@@ -45,13 +45,13 @@ function _git_prompt() {
       branch="(`git describe --all --contains --abbrev=4 HEAD 2> /dev/null ||
           echo HEAD`)"
     fi
-    echo -n ' \[\e[1;37m\]# \[\e[1;'"$ansi"'m\]'"$branch"
+    echo -n ' \[\e[1;34m\]# \[\e[1;'"$ansi"'m\]'"$branch"
   fi
 }
 
 # customize command prompt
 function _prompt_command() {
-  PS1='\[\e[1;37m\]\u@\h\[\e[m\]: \[\e[1;34m\]\w\[\e[m\]'"`_git_prompt`"'\[\e[1;37m\] \$\[\e[m\] '
+  PS1='\[\e[1;34m\]\u@\h\[\e[m\]: \[\e[1;34m\]\w\[\e[m\]'"`_git_prompt`"'\[\e[1;34m\] \$\[\e[m\] '
 }
 
 PROMPT_COMMAND=_prompt_command
