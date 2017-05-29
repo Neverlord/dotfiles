@@ -16,6 +16,7 @@ brew install vim
 brew install ninja
 brew install macvim
 brew install clang-format
+brew install poppler          # for pdftops
 ```
 
 # Git Setup
