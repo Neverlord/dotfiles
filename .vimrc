@@ -168,7 +168,7 @@ nnoremap <expr> <leader>p '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Find a string in all *.hpp and *.cpp files
 function! F(what)
-  silent execute 'grep -R --include="*.cpp" --include="*.hpp" "' . a:what . '" .'
+  silent execute 'grep -R --include="*.cc" --include="*.cpp" --include="*.hh" --include="*.hpp" "' . a:what . '" .'
   execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
   execute "normal! :redraw!\<CR>"
 endfunction
