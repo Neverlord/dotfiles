@@ -23,6 +23,9 @@ brew install poppler          # for pdftops
 
 ```
 git config --global core.editor /usr/local/bin/vim
+git config --global core.excludesfile ~/.gitignore_global
+git config --global user.name "Dominik Charousset"
+git config --global user.name "dominik.charousset@haw-hamburg.de"
 ```
 
 # VIM Setup

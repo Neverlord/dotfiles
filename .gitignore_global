@@ -1,0 +1,12 @@
+.DS_Store
+.texpadtmp/
+*.autosave
+*.aux
+*.log
+*.out
+*.toc
+*.swp
+*.swo
+*.swn
+*.creator.user*
+CMakeLists.txt.user
