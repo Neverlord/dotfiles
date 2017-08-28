@@ -51,7 +51,7 @@ function _git_prompt() {
 
 # customize command prompt
 function _prompt_command() {
-  PS1='\[\e[1;34m\]\u@\h\[\e[m\]: \[\e[1;34m\]\w\[\e[m\]'"`_git_prompt`"'\[\e[1;34m\] \$\[\e[m\] '
+  PS1='@\h\[\e[m\]: \[\e[1;34m\]\w\[\e[m\]'"`_git_prompt`"'\[\e[1;34m\] \$\[\e[m\] '
 }
 
 PROMPT_COMMAND=_prompt_command
