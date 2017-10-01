@@ -8,6 +8,8 @@
 *.swp
 *.swo
 *.swn
+*.o
+.qmake.stash
 *.creator.user*
 CMakeLists.txt.user
 *.pro.user
