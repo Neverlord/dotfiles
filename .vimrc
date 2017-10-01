@@ -35,8 +35,10 @@ scriptencoding utf-8
 "                        Use Ninja instead of make
 " =============================================================================
 
-" rebind :make
-set makeprg=ninja
+" rebind :make to Ninja if a Ninja build file exists
+if filereadable("./build/build.ninja")
+  set makeprg=ninja
+endif
 
 " =============================================================================
 "                             Custom key binding
@@ -58,6 +60,15 @@ inoremap <C-L> :YcmCompleter FixIt<CR>
 
 " rebind CTRL+K for auto-formatting
 map <C-K> :pyf ~/.vim/modules/clang-format.py<CR>
+
+" =============================================================================
+"                              Leader shortcuts 
+" =============================================================================
+
+let mapleader=" "
+
+" rebind CTRL+R to run current project via run.sh script
+nnoremap <leader>r :!./run.sh<CR>
 
 " =============================================================================
 "                                   Styling
@@ -190,16 +201,6 @@ function! Preserve(command)
   let @/=_s
   call cursor(l, c)
 endfunction
-
-" Reverse letters in a word, e.g, "foo" -> "oof".
-vnoremap <silent> <leader>r :<C-U>let old_reg_a=@a<CR>
- \:let old_reg=@"<CR>
- \gv"ay
- \:let @a=substitute(@a, '.\(.*\)\@=',
- \ '\=@a[strlen(submatch(1))]', 'g')<CR>
- \gvc<C-R>a<Esc>
- \:let @a=old_reg_a<CR>
- \:let @"=old_reg<CR>
 
 " Customize solarized color scheme.
 let g:solarized_menu = 0
