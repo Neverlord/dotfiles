@@ -10,3 +10,4 @@
 *.swn
 *.creator.user*
 CMakeLists.txt.user
+*.pro.user
