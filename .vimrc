@@ -36,7 +36,7 @@ scriptencoding utf-8
 " =============================================================================
 
 " rebind :make to Ninja if a Ninja build file exists
-if filereadable("./build/build.ninja")
+if filereadable("./build/build.ninja") || filereadable("./build.ninja")
   set makeprg=ninja
 endif
 
@@ -45,8 +45,13 @@ endif
 " =============================================================================
 
 " rebind CTRL+B to build current project
-map <C-B> :wa<CR>:make! -C build<CR>
-inoremap <C-B> <ESC>:wa<CR>:make! -C build<CR>
+if filereadable("./build/build.ninja") || filereadable("./build/Makefile")
+  map <C-B> :wa<CR>:make! -C build<CR>
+  inoremap <C-B> <ESC>:wa<CR>:make! -C build<CR>
+else
+  map <C-B> :wa<CR>:make!<CR>
+  inoremap <C-B> <ESC>:wa<CR>:make!<CR>
+endif
 
 " rebind CTRL+M to open build messages
 noremap <S-B> :copen<CR><C-W><S-J>
