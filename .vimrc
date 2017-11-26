@@ -1,6 +1,4 @@
-" =============================================================================
-"                               General settings
-" =============================================================================
+" -- General settings --------------------------------------------------------
 
 set nocompatible        " iMproved.
 
@@ -29,22 +27,20 @@ set printoptions+=header:0
 set visualbell
 set t_vb=
 
-scriptencoding utf-8
+" Remove trailing spaces when saving a file.
+autocmd BufWritePre * %s/\s\+$//e
 
-" =============================================================================
-"                        Use Ninja instead of make
-" =============================================================================
+" Make sure we use a sane file format.
+scriptencoding utf-8
 
 " rebind :make to Ninja if a Ninja build file exists
 if filereadable("./build/build.ninja") || filereadable("./build.ninja")
   set makeprg=ninja
 endif
 
-" =============================================================================
-"                             Custom key binding
-" =============================================================================
+" -- Key binding -------------------------------------------------------------
 
-" rebind CTRL+B to build current project
+" Rebind CTRL+B to build current project.
 if filereadable("./build/build.ninja") || filereadable("./build/Makefile")
   map <C-B> :wa<CR>:make! -C build<CR>
   inoremap <C-B> <ESC>:wa<CR>:make! -C build<CR>
@@ -53,31 +49,50 @@ else
   inoremap <C-B> <ESC>:wa<CR>:make!<CR>
 endif
 
-" rebind CTRL+M to open build messages
+" Rebind CTRL+M to open build messages.
 noremap <S-B> :copen<CR><C-W><S-J>
 
-" rebind CTRL+N for jumping to the next error/warning
+" Rebind CTRL+N for jumping to the next error/warning.
 map <C-N> :cnext<CR>
 
-" rebind CTRL+L for applying Clang-suggested fixes
+" Rebind CTRL+L for applying Clang-suggested fixes.
 map <C-L> :YcmCompleter FixIt<CR>
 inoremap <C-L> :YcmCompleter FixIt<CR>
 
-" rebind CTRL+K for auto-formatting
+" rebind CTRL+K for auto-formatting.
 map <C-K> :pyf ~/.vim/modules/clang-format.py<CR>
 
-" =============================================================================
-"                              Leader shortcuts 
-" =============================================================================
+let mapleader = ' '
+
+" Clear last search highlighting.
+nnoremap <CR> :noh<CR><CR>
+
+" Toggle list mode (display unprintable characters).
+nnoremap <F11> :set list!<CR>
+
+" Avoid hitting <ESC> dozens of times a day.
+inoremap jk <ESC>
+
+" Toggle paste mode.
+set pastetoggle=<F12>
+
+" Remove trailing whitespace.
+nmap <leader>$ :call Preserve("%s/\\s\\+$//e")<CR>
+
+" Indent entire file.
+nmap <leader>= :call Preserve("normal gg=G")<CR>
+
+" Highlight text last pasted.
+nnoremap <expr> <leader>p '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+" -- Leader shortcuts --------------------------------------------------------
 
 let mapleader=" "
 
-" rebind CTRL+R to run current project via run.sh script
+" rebind Leader+R to run current project via run.sh script
 nnoremap <leader>r :!./run.sh<CR>
 
-" =============================================================================
-"                                   Styling
-" =============================================================================
+" -- Styling -----------------------------------------------------------------
 
 set colorcolumn=80      " Draw a line at 80 character limit"
 set background=light    " Syntax highlighting for a bright terminal background.
@@ -109,9 +124,7 @@ if version >= 600
     set foldmethod=marker
 endif
 
-" =============================================================================
-"                                  Formatting
-" =============================================================================
+" -- Formatting --------------------------------------------------------------
 
 set formatoptions=tcrqn " See :h 'fo-table for a detailed explanation.
 set nojoinspaces        " Don't insert two spaces when joining after [.?!].
@@ -130,57 +143,16 @@ set shiftwidth=2        " Tab indention
 " W2  = ...but not if the last character in the line is an open parenthesis.
 set cinoptions=l1,N-s,t0,(0,W2
 
-" =============================================================================
-"                                   Spelling
-" =============================================================================
+" -- Spelling ----------------------------------------------------------------
 
 if has("spell")
   set spelllang=en,de
   set spellfile=~/.vim/spellfile.add
 endif
 
-" =============================================================================
-"                                 Key Bindings
-" =============================================================================
+" -- Key Bindings ------------------------------------------------------------
 
-let mapleader = ' '
-
-" Clear last search highlighting
-nnoremap <CR> :noh<CR><CR>
-
-" Toggle list mode (display unprintable characters).
-nnoremap <F11> :set list!<CR>
-
-" avoid hitting <ESC> dozens of times a day
-inoremap jk <ESC>
-
-" Toggle paste mode.
-set pastetoggle=<F12>
-
-" Quicker navigation for non-wrapped lines.
-vmap <D-j> gj
-vmap <D-k> gk
-vmap <D-4> g$
-vmap <D-6> g^
-vmap <D-0> g^
-nmap <D-j> gj
-nmap <D-k> gk
-nmap <D-4> g$
-nmap <D-6> g^
-nmap <D-0> g^
-
-" Remove trailing whitespace.
-nmap <leader>$ :call Preserve("%s/\\s\\+$//e")<CR>
-
-" Indent entire file.
-nmap <leader>= :call Preserve("normal gg=G")<CR>
-
-" Highlight text last pasted.
-nnoremap <expr> <leader>p '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-" =============================================================================
-"                               Custom Functions
-" =============================================================================
+" -- Custom Functions --------------------------------------------------------
 
 " Find a string in all *.hpp and *.cpp files
 function! F(what)
@@ -231,9 +203,7 @@ let vimrplugin_vsplit = 1     "split R vertically.
 " Needs to be executed after Vundle.
 filetype plugin indent on
 
-" =============================================================================
-"                                Filetype Stuff
-" =============================================================================
+" -- Filetype Stuff ----------------------------------------------------------
 
 if &t_Co > 2 || has('gui_running')
   syntax on
@@ -306,9 +276,7 @@ augroup END
 
 " vim: set fenc=utf-8 sw=2 sts=2 foldmethod=marker :
 
-" =============================================================================
-"                                 PLUGINS
-" =============================================================================
+" -- Plugins -----------------------------------------------------------------
 
 " accept YCM config files without asking every single time
 let g:ycm_confirm_extra_conf = 0
