@@ -306,6 +306,9 @@ Plug 'wesQ3/vim-windowswap'
 " allows builds in the background via :Make and :Dispatch
 Plug 'tpope/vim-dispatch'
 
+" allows editing of .aes file via OpenSSL
+Plug 'vim-scripts/openssl.vim'
+
 " code-completion engine
 function! BuildYCM(info)
   " info is a dictionary with 3 fields
