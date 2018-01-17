@@ -8,7 +8,7 @@ alias "gph=git push && git submodule foreach git push"
 alias "sn=ninja -C build"
 
 # tell CAF's configure script we're using ninja instead of make
-export DEFAULT_CMAKE_GENERATOR="Ninja"
+export CMAKE_GENERATOR="Ninja"
 
 # tell BibteX where to find bibliography databases
 export BIBINPUTS="$HOME/papers/bib"
