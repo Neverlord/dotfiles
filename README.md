@@ -29,7 +29,7 @@ brew install imagemagick
 git config --global core.editor /usr/local/bin/vim
 git config --global core.excludesfile ~/.gitignore_global
 git config --global user.name "Dominik Charousset"
-git config --global user.email "dominik.charousset@haw-hamburg.de"
+git config --global user.email ...
 ```
 
 # VIM Setup
