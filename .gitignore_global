@@ -13,3 +13,5 @@
 *.creator.user*
 CMakeLists.txt.user
 *.pro.user
+caf-application.ini
+vast.ini
