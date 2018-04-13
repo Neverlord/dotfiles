@@ -60,7 +60,7 @@ map <C-L> :YcmCompleter FixIt<CR>
 inoremap <C-L> :YcmCompleter FixIt<CR>
 
 " rebind CTRL+K for auto-formatting.
-map <C-K> :pyf ~/.vim/modules/clang-format.py<CR>
+map <C-K> :py3f ~/.vim/modules/clang-format.py<CR>
 
 let mapleader = ' '
 
