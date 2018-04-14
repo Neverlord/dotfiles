@@ -321,8 +321,11 @@ function! BuildYCM(info)
     endfunction
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 
-" CTRLP config
+" Ignore build directories in CTRLP.
 let g:ctrlp_custom_ignore = { 'dir': '/build/' }
+
+" Consider any directory with a '.ctrlp' file
+let g:ctrlp_root_markers = ['.ctrlp']
 
 " done
 call plug#end()
