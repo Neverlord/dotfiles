@@ -13,6 +13,9 @@ export CMAKE_GENERATOR="Ninja"
 # tell BibteX where to find bibliography databases
 export BIBINPUTS="$HOME/papers/bib"
 
+# tell CMake where to find our OpenSSL
+export OPENSSL_ROOT_DIR=$(brew --prefix openssl)
+
 # make sure our language is US english with UTF-8 encoding
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"
