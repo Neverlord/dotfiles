@@ -4,6 +4,8 @@ alias "gpm=git submodule foreach git checkout master"
 alias "gst=git status && git submodule foreach git status"
 alias "gph=git push && git submodule foreach git push"
 
+alias lvim="vim -c 'set syntax=log' -"
+
 # convenience alias for building in "build" subdirectory
 alias "sn=ninja -C build"
 
