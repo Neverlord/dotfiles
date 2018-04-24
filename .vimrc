@@ -60,7 +60,11 @@ map <C-L> :YcmCompleter FixIt<CR>
 inoremap <C-L> :YcmCompleter FixIt<CR>
 
 " rebind CTRL+K for auto-formatting.
-map <C-K> :py3f ~/.vim/modules/clang-format.py<CR>
+if has('python3')
+  map <C-K> :py3f ~/.vim/modules/clang-format.py<CR>
+else
+  map <C-K> :py ~/.vim/modules/clang-format.py<CR>
+endif
 
 let mapleader = ' '
 
@@ -102,6 +106,7 @@ set showbreak=…         " Highlight non-wrapped lines.
 set showcmd             " Display incomplete command in bottom right corner.
 set relativenumber
 set number
+set nowrap
 
 if has('gui_running')
   set columns=80
@@ -166,6 +171,38 @@ command! -nargs=* Find call F('<args>')
 " map CTRL+F to ':Find ''
 map <C-F> <ESC>:Find 
 imap <C-F> <ESC>:Find 
+
+let g:addClassScript = getcwd() . "/add_class"
+
+if filereadable(g:addClassScript)
+  if has('python3')
+    python3 import sys, vim
+    python3 sys.argv = ["vim"]
+    execute "py3file " . g:addClassScript
+  else
+    python import sys, vim
+    python sys.argv = ["vim"]
+    execute "pyfile " . g:addClassScript
+  endif
+  let g:hasAddClass = 1
+else
+  let g:hasAddClass = 0
+endif
+
+function! AddClassFun(name)
+  if g:hasAddClass
+    if has('python3')
+      py3 add_class_by_name(False, vim.eval('a:name'))
+    else
+      py add_class_by_name(False, vim.eval('a:name'))
+    endif
+    ClearAllCtrlPCaches
+  endif
+endfunction
+
+command! -nargs=* AddClass call AddClassFun('<args>')
+
+map <leader>n :AddClass 
 
 function! Preserve(command)
   " Preparation: save last search, and cursor position.
