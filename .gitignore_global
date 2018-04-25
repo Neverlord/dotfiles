@@ -1,5 +1,6 @@
 *.autosave
 *.aux
+*.blg
 *.creator.user*
 *.log
 *.o
@@ -9,6 +10,7 @@
 *.swn
 *.swo
 *.swp
+*.synctex.gz
 *.toc
 .DS_Store
 .qmake.stash
