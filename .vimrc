@@ -161,7 +161,7 @@ endif
 
 " Find a string in all *.hpp and *.cpp files
 function! F(what)
-  silent execute 'grep -R --include="*.cc" --include="*.cpp" --include="*.hh" --include="*.hpp" "' . a:what . '" .'
+  silent execute 'grep -R --exclude-dir=build --include="*.tex" --include="*.cc" --include="*.cpp" --include="*.hh" --include="*.hpp" "' . a:what . '" .'
   execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
   execute "normal! :redraw!\<CR>"
 endfunction
@@ -359,7 +359,7 @@ function! BuildYCM(info)
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 
 " Ignore build directories in CTRLP.
-let g:ctrlp_custom_ignore = { 'dir': '/build/' }
+let g:ctrlp_custom_ignore = 'build'
 
 " Consider any directory with a '.ctrlp' file
 let g:ctrlp_root_markers = ['.ctrlp']
