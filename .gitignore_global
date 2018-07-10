@@ -16,6 +16,7 @@
 .qmake.stash
 .texpadtmp/
 CMakeLists.txt.user
+build/
 caf-application.ini
 compile_commands.json
 vast-unit-test.log
