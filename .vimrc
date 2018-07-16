@@ -315,6 +315,10 @@ augroup END
 
 " -- Plugins -----------------------------------------------------------------
 
+" have CTRL+P scan all files in a directory
+let g:ctrlp_max_files=0
+let g:ctrlp_max_depth=100
+
 " accept YCM config files without asking every single time
 let g:ycm_confirm_extra_conf = 0
 
