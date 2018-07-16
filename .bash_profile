@@ -4,6 +4,9 @@ alias "gpm=git submodule foreach git checkout master"
 alias "gst=git status && git submodule foreach git status"
 alias "gph=git push && git submodule foreach git push"
 
+# convenience aliases for workspace editing
+alias "v=(cd $HOME/workspace && mvim)"
+
 alias lvim="vim -c 'set syntax=log' -"
 
 # convenience alias for building in "build" subdirectory
