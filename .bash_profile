@@ -4,8 +4,26 @@ alias "gpm=git submodule foreach git checkout master"
 alias "gst=git status && git submodule foreach git status"
 alias "gph=git push && git submodule foreach git push"
 
-# convenience aliases for workspace editing
-alias "v=(cd $HOME/workspace && mvim)"
+# Tries to find a workspace directory containing a `.ctrlp` stopper file.
+# Otherwise returns `PWD`.
+function workspace_root() {
+  if [ -f ".ctrlp" ]; then
+    echo "$PWD"
+    return 0
+  fi
+  path="$(dirname $PWD)"
+  while [ "$path" != '/' ]; do
+    if [ -f "$path/.ctrlp" ]; then
+      echo "$path"
+      return 0
+    fi
+    path="$(dirname $path)"
+  done
+  echo "$PWD"
+}
+
+# convenience aliases for WorkSpace editing
+alias "ws=(cd \$(workspace_root) && mvim)"
 
 alias lvim="vim -c 'set syntax=log' -"
 
