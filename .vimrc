@@ -96,6 +96,9 @@ let mapleader=" "
 " rebind Leader+R to run current project via run.sh script
 nnoremap <leader>r :!./run.sh<CR>
 
+" rebind Leader+S for sorting a selected range
+xnoremap <leader>s :sort<CR>
+
 " -- Styling -----------------------------------------------------------------
 
 set colorcolumn=80      " Draw a line at 80 character limit"
@@ -161,7 +164,7 @@ endif
 
 " Find a string in all *.hpp and *.cpp files
 function! F(what)
-  silent execute 'grep -R --exclude-dir=build --include="*.tex" --include="*.cc" --include="*.cpp" --include="*.hh" --include="*.hpp" "' . a:what . '" .'
+  silent execute 'grep -R --exclude-dir=build --include="*.tex --include="*.txt"" --include="*.cc" --include="*.cpp" --include="*.hh" --include="*.hpp" "' . a:what . '" .'
   execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
   execute "normal! :redraw!\<CR>"
 endfunction
