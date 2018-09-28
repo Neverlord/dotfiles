@@ -1,11 +1,8 @@
-*.autosave
 *.aux
 *.blg
-*.creator.user*
 *.log
 *.o
 *.out
-*.pro.user
 *.pyc
 *.swn
 *.swo
@@ -13,12 +10,11 @@
 *.synctex.gz
 *.toc
 .DS_Store
-.qmake.stash
-.texpadtmp/
 CMakeLists.txt.user
 build/
 caf-application.ini
 compile_commands.json
+tmp/
 vast-unit-test.log
 vast-unit-test/
 vast.ini
