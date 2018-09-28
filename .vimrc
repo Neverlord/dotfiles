@@ -115,7 +115,7 @@ if has('gui_running')
   set columns=80
   set lines=25
   set guioptions-=T   " Remove the toolbar.
-  set guifont="Anonymous Pro":h14
+  set guifont=Anonymous\ Pro\ for\ Powerline:h12
   "set transparency=5
 
   " Disable MacVim-specific Cmd/Alt key mappings.
@@ -230,6 +230,7 @@ if !has('gui_running')
 end
 colorscheme solarized
 
+
 " Active lightline.
 set laststatus=2
 
@@ -314,63 +315,88 @@ augroup encrypted
     autocmd BufWritePost,FileWritePost  *.gpg u
 augroup END
 
-" vim: set fenc=utf-8 sw=2 sts=2 foldmethod=marker :
+" -- plugins -----------------------------------------------------------------
 
-" -- Plugins -----------------------------------------------------------------
-
-" have CTRL+P scan all files in a directory
-let g:ctrlp_max_files=0
-let g:ctrlp_max_depth=100
-
-" accept YCM config files without asking every single time
-let g:ycm_confirm_extra_conf = 0
-
-" close YCM preview window automatically
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-
-" start listing plugins
 call plug#begin('~/.vim/plugged')
 
-" IDE-like view of files in current path on the left
+" Adds IDE-like file views in current path on the left.
 Plug 'scrooloose/nerdtree'
 
-" CTRL+P for opening files with fuzzy search
+" Allows fuzzy-search when opening files.
 Plug 'kien/ctrlp.vim'
 
-" auto-completion for brackets
-Plug 'jiangmiao/auto-pairs'
+" Have CTRL+P scan all files in a directory.
+let g:ctrlp_max_files=0
 
-" allows to easily add parens or quotes around selected text
-Plug 'tpope/vim-surround'
-
-" allows swapping contents of splits
-Plug 'wesQ3/vim-windowswap'
-
-" allows builds in the background via :Make and :Dispatch
-Plug 'tpope/vim-dispatch'
-
-" allows editing of .aes file via OpenSSL
-Plug 'vim-scripts/openssl.vim'
-
-" code-completion engine
-function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " - name:   name of the plugin
-  " - status: 'installed', 'updated', or 'unchanged'
-  " - force:  set on PlugInstall! or PlugUpdate!
-  if a:info.status != 'unchanged'
-    !./install.py --clang-completer
-    endif
-    endfunction
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+" Recursively scan up to 100 directories.
+let g:ctrlp_max_depth=100
 
 " Ignore build directories in CTRLP.
 let g:ctrlp_custom_ignore = 'build/'
 
-" Consider any directory with a '.ctrlp' file
+" Scan for directories with a '.ctrlp' file as root.
 let g:ctrlp_root_markers = ['.ctrlp']
 
-" done
-call plug#end()
+" Adds auto-completion for brackets.
+Plug 'jiangmiao/auto-pairs'
 
+" Adds a status/tabline to VIM.
+Plug 'vim-airline/vim-airline'
+
+" Themes for the status line.
+Plug 'vim-airline/vim-airline-themes'
+
+" Prettify status line.
+let g:airline#extensions#tabline#enabled = 2
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_theme= 'solarized'
+
+" Allows to easily add parens or quotes around selected text.
+Plug 'tpope/vim-surround'
+
+" Allows swapping contents of splits.
+Plug 'wesQ3/vim-windowswap'
+
+" Allows editing of .aes file via OpenSSL.
+Plug 'vim-scripts/openssl.vim'
+
+" Integrates C-Query into VIM.
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+" Use the location-list for C-Query hits instead of the quickfix list.
+let g:LanguageClient_selectionUI = 'location-list'
+let g:LanguageClient_diagnosticsList = 'Location'
+
+" Set proper path for C-Query.
+let g:LanguageClient_serverCommands = {
+\ 'cpp': ['/usr/local/bin/cquery',
+\ '--log-file=/tmp/cq.log',
+\ '--init={"cacheDirectory":"/var/cquery/","extraClangArguments":["-I/Library/Developer/CommandLineTools/usr/include/c++/v1"]}']
+\ }
+
+" Required for operations modifying multiple buffers like C-Query's rename.
+set hidden
+
+" Enables auto-completion via C-Query.
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+" Use <tab> for auto-completion.
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+" Always enable auto-completion.
+let g:deoplete#enable_at_startup = 1
+
+" Initialize deoplete variables.
+let g:deoplete#sources = get(g:,'deoplete#sources',{})
+
+call plug#end()
