@@ -11,6 +11,10 @@ function workspace_root() {
     echo "$PWD"
     return 0
   fi
+  if [ -d "$PWD/workspace" ]; then
+    echo "$PWD/workspace"
+    return 0
+  fi
   path="$(dirname $PWD)"
   while [ "$path" != '/' ]; do
     if [ -f "$path/.ctrlp" ]; then
