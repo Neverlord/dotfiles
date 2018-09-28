@@ -13,14 +13,10 @@ git init . && git remote add origin https://github.com/Neverlord/dotfiles.git &&
 
 ```
 # Programming environment
-brew install vim
-brew install ninja
-brew install macvim
-brew install clang-format
+brew install vim cquery ninja macvim clang-format hub stdman openssl
 
 # LaTeX and UseLATEX environment
-brew install poppler
-brew install imagemagick
+brew install poppler imagemagick
 ```
 
 # Git Setup
