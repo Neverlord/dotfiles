@@ -41,7 +41,9 @@ export CMAKE_GENERATOR="Ninja"
 export BIBINPUTS="$HOME/papers/bib"
 
 # tell CMake where to find our OpenSSL
-export OPENSSL_ROOT_DIR=$(brew --prefix openssl)
+if [ "$(uname)" == "Darwin" ] ; then
+  export OPENSSL_ROOT_DIR=$(brew --prefix openssl)
+fi
 
 # make sure our language is US english with UTF-8 encoding
 export LC_ALL="en_US.UTF-8"
