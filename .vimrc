@@ -377,7 +377,7 @@ let g:LanguageClient_diagnosticsList = 'Location'
 let g:LanguageClient_serverCommands = {
 \ 'cpp': ['/usr/local/bin/cquery',
 \ '--log-file=/tmp/cq.log',
-\ '--init={"cacheDirectory":"/var/cquery/","extraClangArguments":["-I/Library/Developer/CommandLineTools/usr/include/c++/v1"]}']
+\ '--init={"cacheDirectory":"/tmp/cquery/","extraClangArguments":["-I/Library/Developer/CommandLineTools/usr/include/c++/v1"]}']
 \ }
 
 " Required for operations modifying multiple buffers like C-Query's rename.
