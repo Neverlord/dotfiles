@@ -339,6 +339,9 @@ let g:ctrlp_custom_ignore = 'build/'
 " Scan for directories with a '.ctrlp' file as root.
 let g:ctrlp_root_markers = ['.ctrlp']
 
+" Disable caching.
+let g:ctrlp_use_caching = 0
+
 " Adds auto-completion for brackets.
 Plug 'jiangmiao/auto-pairs'
 
