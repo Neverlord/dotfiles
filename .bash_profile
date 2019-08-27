@@ -34,8 +34,8 @@ if [ "$(uname)" == "Darwin" ] ; then
     have_icloud_drive=true
   else
     long_path="$HOME/Library/Mobile Documents/com~apple~CloudDocs/"
-    if [ -d "long_path" ]; then
-      if ln -s "$HOME/iCloudDrive" "$long_path"; then
+    if [ -d "$long_path" ]; then
+      if ln -s "$long_path" "$HOME/iCloudDrive"; then
         have_icloud_drive=true
       fi
     fi
