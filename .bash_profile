@@ -1,8 +1,52 @@
-# convenience aliases for Git usage
-alias "gpl=git pull && git submodule foreach git pull"
-alias "gpm=git submodule foreach git checkout master"
-alias "gst=git status && git submodule foreach git status"
-alias "gph=git push && git submodule foreach git push"
+# -- include all scripts in $HOME/.bash ---------------------------------------
+
+if [ -d "$HOME/.bash" ]; then
+  for i in "$HOME/.bash/"*; do
+    source "$i"
+  done
+fi
+
+# -- set default settings for languages, colors, etc. -------------------------
+
+# Make sure our language is US english with UTF-8 encoding.
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+
+# Make `ls` output colored.
+export CLICOLOR=1
+export LSCOLORS="DxGxcxdxCxegedabagacad"
+
+# Increase size of bash history.
+export HISTFILESIZE=50000000
+
+# -- path setup ---------------------------------------------------------------
+
+# Tell BibteX where to find the bibliography databases.
+export BIBINPUTS="$HOME/papers/bib"
+
+# Settings specific to macOS.
+if [ "$(uname)" == "Darwin" ] ; then
+  # Tell CMake where to find our OpenSSL
+  export OPENSSL_ROOT_DIR=$(brew --prefix openssl)
+  # Configure symlink to the iCloud storage if not present.
+  have_icloud_drive=false
+  if [ -d "$HOME/iCloudDrive" ]; then
+    have_icloud_drive=true
+  else
+    long_path="$HOME/Library/Mobile Documents/com~apple~CloudDocs/"
+    if [ -d "long_path" ]; then
+      if ln -s "$HOME/iCloudDrive" "$long_path"; then
+        have_icloud_drive=true
+      fi
+    fi
+  fi
+  # Tell `pass` where to find the store.
+  if [ "$have_icloud_drive" = true ]; then
+    export PASSWORD_STORE_DIR=$HOME/iCloudDrive/.password-store
+  fi
+fi
+
+# -- custom commands and aliases ----------------------------------------------
 
 # Tries to find a workspace directory containing a `.ctrlp` stopper file.
 # Otherwise returns `PWD`.
@@ -15,7 +59,7 @@ function workspace_root() {
     echo "$PWD/workspace"
     return 0
   fi
-  path="$(dirname $PWD)"
+  local path="$(dirname $PWD)"
   while [ "$path" != '/' ]; do
     if [ -f "$path/.ctrlp" ]; then
       echo "$path"
@@ -26,42 +70,18 @@ function workspace_root() {
   echo "$PWD"
 }
 
-# convenience aliases for WorkSpace editing
-alias "ws=(cd \$(workspace_root) && mvim)"
+# Convenience alias for opening the workspace.
+alias "ws=(cd \$(workspace_root) && vimr)"
 
+# Convenience alias for piping log-formatted output to Vim.
 alias lvim="vim -c 'set syntax=log' -"
 
-# convenience alias for building in "build" subdirectory
-alias "sn=ninja -C build"
+# -- Include Git status in bash prompt ----------------------------------------
 
-# tell CAF's configure script we're using ninja instead of make
-export CMAKE_GENERATOR="Ninja"
-
-# tell BibteX where to find bibliography databases
-export BIBINPUTS="$HOME/papers/bib"
-
-# tell CMake where to find our OpenSSL
-if [ "$(uname)" == "Darwin" ] ; then
-  export OPENSSL_ROOT_DIR=$(brew --prefix openssl)
-fi
-
-# make sure our language is US english with UTF-8 encoding
-export LC_ALL="en_US.UTF-8"
-export LANG="en_US.UTF-8"
-
-# colored ls output
-export CLICOLOR=1
-export LSCOLORS="DxGxcxdxCxegedabagacad"
-
-# longer history
-export HISTFILESIZE=50000000
-
-source "$HOME/.bash/git-completion.bash"
-
-# generates a nice Git prompt for the current branch
+# Generates a nice Git prompt for the current branch.
 function _git_prompt() {
   local git_status="`git status -unormal 2>&1`"
-  if ! [[ "$git_status" =~ Not\ a\ git\ repo ]]; then
+  if ! [[ "$git_status" =~ not\ a\ git\ repo ]]; then
     if [[ "$git_status" =~ nothing\ to\ commit ]]; then
       local ansi=32
     elif [[ "$git_status" =~ nothing\ added\ to\ commit\ but\ untracked\ files\ present ]]; then
@@ -81,10 +101,9 @@ function _git_prompt() {
   fi
 }
 
-# customize command prompt
+# Customize command prompt.
 function _prompt_command() {
   PS1='@\h\[\e[m\]: \[\e[1;34m\]\w\[\e[m\]'"`_git_prompt`"'\[\e[1;34m\] \$\[\e[m\] '
 }
 
 PROMPT_COMMAND=_prompt_command
-

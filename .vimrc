@@ -11,7 +11,6 @@ set incsearch           " Jumps to search word as you type.
 set smartcase           " Override ignorecase when searching uppercase.
 set modeline            " Enables modelines.
 set wildmode=longest,list:full " How to complete <Tab> matches.
-"set tildeop             " Makes ~ an operator.
 set virtualedit=block   " Support moving in empty space in block mode.
 
 " Low priority for these files in tab-completion.
@@ -141,9 +140,7 @@ set nojoinspaces        " Don't insert two spaces when joining after [.?!].
 set copyindent          " Copy the structure of existing indentation
 set expandtab           " Expand tabs to spaces.
 set tabstop=2           " number of spaces for a <Tab>.
-"set softtabstop=2       " Number of spaces that a <Tab> counts for.
 set shiftwidth=2        " Tab indention
-"set textwidth=79        " Text width
 
 " Indentation Tweaks.
 " l1  = align with case label isntead of steatement after it in the same line.
@@ -174,8 +171,8 @@ endfunction
 command! -nargs=* Find call F('<args>')
 
 " map CTRL+F to ':Find ''
-map <C-F> <ESC>:Find 
-imap <C-F> <ESC>:Find 
+map <C-F> <ESC>:Find<Space>
+imap <C-F> <ESC>:Find<Space>
 
 let g:addClassScript = getcwd() . "/add_class"
 
@@ -207,7 +204,7 @@ endfunction
 
 command! -nargs=* AddClass call AddClassFun('<args>')
 
-map <leader>n :AddClass 
+map <leader>n :AddClass
 
 function! Preserve(command)
   " Preparation: save last search, and cursor position.
@@ -232,12 +229,8 @@ if !has('gui_running')
 end
 colorscheme solarized
 
-
 " Active lightline.
 set laststatus=2
-
-" LaTeX Suite: Prevents Vim 7 from setting filetype to 'plaintex'.
-let g:tex_flavor = 'latex'
 
 let vimrplugin_notmuxconf = 1 "do not overwrite an existing tmux.conf.
 let vimrplugin_assign = 0     "do not replace '_' with '<-'.
@@ -286,37 +279,6 @@ if has("spell")
   autocmd Filetype tex              set spell
 endif
 
-" Prepend CTRL on Alt-key mappings: Alt-{B,C,L,I}
-"autocmd Filetype tex imap <C-M-b> <Plug>Tex_MathBF
-"autocmd Filetype tex imap <C-M-c> <Plug>Tex_MathCal
-"autocmd Filetype tex imap <C-M-l> <Plug>Tex_LeftRight
-"autocmd Filetype tex imap <C-M-i> <Plug>Tex_InsertItem
-
-" Transparent editing of gpg encrypted files.
-" By Wouter Hanegraaff <wouter@blub.net>
-augroup encrypted
-    autocmd!
-    " First make sure nothing is written to ~/.viminfo while editing
-    " an encrypted file.
-    autocmd BufReadPre,FileReadPre      *.gpg set viminfo=
-    " We don't want a swap file, as it writes unencrypted data to disk
-    autocmd BufReadPre,FileReadPre      *.gpg set noswapfile
-    " Switch to binary mode to read the encrypted file
-    autocmd BufReadPre,FileReadPre      *.gpg set bin
-    autocmd BufReadPre,FileReadPre      *.gpg let ch_save = &ch|set ch=2
-    autocmd BufReadPost,FileReadPost    *.gpg '[,']!gpg --decrypt 2> /dev/null
-    " Switch to normal mode for editing
-    autocmd BufReadPost,FileReadPost    *.gpg set nobin
-    autocmd BufReadPost,FileReadPost    *.gpg let &ch = ch_save|unlet ch_save
-    autocmd BufReadPost,FileReadPost    *.gpg execute ":doautocmd BufReadPost " . expand("%:r")
-
-    " Convert all text to encrypted text before writing
-    autocmd BufWritePre,FileWritePre    *.gpg '[,']!gpg --default-recipient-self -ae 2>/dev/null
-    " Undo the encryption so we are back in the normal text, directly
-    " after the file has been written.
-    autocmd BufWritePost,FileWritePost  *.gpg u
-augroup END
-
 " -- plugins -----------------------------------------------------------------
 
 call plug#begin('~/.vim/plugged')
@@ -340,7 +302,7 @@ let g:ctrlp_custom_ignore = 'build/'
 let g:ctrlp_root_markers = ['.ctrlp']
 
 " Disable caching.
-let g:ctrlp_use_caching = 0
+" let g:ctrlp_use_caching = 0
 
 " Adds auto-completion for brackets.
 Plug 'jiangmiao/auto-pairs'
@@ -365,43 +327,5 @@ Plug 'wesQ3/vim-windowswap'
 
 " Allows editing of .aes file via OpenSSL.
 Plug 'vim-scripts/openssl.vim'
-
-" Integrates C-Query into VIM.
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-
-" Use the location-list for C-Query hits instead of the quickfix list.
-let g:LanguageClient_selectionUI = 'location-list'
-let g:LanguageClient_diagnosticsList = 'Location'
-
-" Set proper path for C-Query.
-let g:LanguageClient_serverCommands = {
-\ 'cpp': ['/usr/local/bin/cquery',
-\ '--log-file=/tmp/cq.log',
-\ '--init={"cacheDirectory":"/tmp/cquery/","extraClangArguments":["-I/Library/Developer/CommandLineTools/usr/include/c++/v1"]}']
-\ }
-
-" Required for operations modifying multiple buffers like C-Query's rename.
-set hidden
-
-" Enables auto-completion via C-Query.
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-
-" Use <tab> for auto-completion.
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
-" Always enable auto-completion.
-let g:deoplete#enable_at_startup = 1
-
-" Initialize deoplete variables.
-let g:deoplete#sources = get(g:,'deoplete#sources',{})
 
 call plug#end()
