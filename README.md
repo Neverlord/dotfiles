@@ -22,6 +22,10 @@ brew cask install vimr
 brew install poppler imagemagick
 ```
 
+Go to `System Preferences` > `Users & Groups` > `Advanced Options` and change
+login shell to `/usr/local/bin/bash` (*after* `brew install bash`). This step
+is necessary to get proper autocompletion in `bash` working with `pass`.
+
 # Git Setup
 
 ```
