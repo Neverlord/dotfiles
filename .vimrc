@@ -325,7 +325,4 @@ Plug 'tpope/vim-surround'
 " Allows swapping contents of splits.
 Plug 'wesQ3/vim-windowswap'
 
-" Allows editing of .aes file via OpenSSL.
-Plug 'vim-scripts/openssl.vim'
-
 call plug#end()
