@@ -13,7 +13,7 @@ git init . && git remote add origin https://github.com/Neverlord/dotfiles.git &&
 
 ```
 # Libs and CLI tools.
-brew install bash vim cquery ninja clang-format hub stdman openssl gpg pass
+brew install bash cquery ninja clang-format hub stdman openssl gpg pass
 
 # GUI tools.
 brew cask install vimr
