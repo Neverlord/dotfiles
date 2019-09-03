@@ -2,14 +2,8 @@
 
 set termguicolors
 
-set nocompatible        " iMproved.
-
-set autoindent          " Copy indent from current line on starting a new line.
-set backspace=indent,eol,start " Backspacing over everything in insert mode.
 set hidden              " Allow for putting dirty buffers in background.
-set history=1024        " Lines of command history
 set ignorecase          " Case-insensitive search
-set incsearch           " Jumps to search word as you type.
 set smartcase           " Override ignorecase when searching uppercase.
 set modeline            " Enables modelines.
 set wildmode=longest,list:full " How to complete <Tab> matches.
@@ -96,10 +90,7 @@ xnoremap <leader>s :sort<CR>
 
 set colorcolumn=80      " Draw a line at 80 character limit"
 set background=light    " Syntax highlighting for a bright terminal background.
-set hlsearch            " Highlight search results.
-set ruler               " Show the cursor position all the time.
 set showbreak=…         " Highlight non-wrapped lines.
-set showcmd             " Display incomplete command in bottom right corner.
 set relativenumber
 set number
 set nowrap
@@ -143,6 +134,8 @@ set shiftwidth=2        " Tab indention
 " (0  = line up with next non-white character after unclosed parentheses...
 " W2  = ...but not if the last character in the line is an open parenthesis.
 set cinoptions=l1,N-s,t0,(0,W2
+
+let g:load_doxygen_syntax=1 " Enable Doxygen syntax higlight
 
 " -- Spelling ----------------------------------------------------------------
 
@@ -223,18 +216,11 @@ if !has('gui_running')
 end
 colorscheme NeoSolarized
 
-" Active lightline.
-set laststatus=2
-
 let vimrplugin_notmuxconf = 1 "do not overwrite an existing tmux.conf.
 let vimrplugin_assign = 0     "do not replace '_' with '<-'.
 let vimrplugin_vsplit = 1     "split R vertically.
 
 " -- Filetype Stuff ----------------------------------------------------------
-
-if &t_Co > 2 || has('gui_running')
-  syntax on
-endif
 
 " R stuff
 autocmd BufNewFile,BufRead *.[rRsS] set ft=r
@@ -248,15 +234,8 @@ autocmd BufRead,BufNewFile *.ll       set filetype=llvm
 autocmd BufRead,BufNewFile *.kramdown set filetype=markdown
 autocmd BufRead,BufNewFile Portfile   set filetype=tcl
 
-" Respect (Br|D)oxygen comments.
-autocmd FileType c,cpp set comments-=://
-autocmd FileType c,cpp set comments+=:///
-autocmd FileType c,cpp set comments+=://
-autocmd FileType bro set comments-=:#
-autocmd FileType bro set comments+=:##
-autocmd FileType bro set comments+=:#
-autocmd Filetype mail set sw=4 ts=4 tw=72
-autocmd Filetype tex set iskeyword+=:
+" C++ comments
+autocmd FileType c,cpp setlocal comments=:///://!://
 
 " Bro-specific coding style.
 augroup BroProject
@@ -325,13 +304,6 @@ Plug 'autozimu/LanguageClient-neovim', {
 " Use the location-list for C-Query hits instead of the quickfix list.
 let g:LanguageClient_selectionUI = 'location-list'
 let g:LanguageClient_diagnosticsList = 'Location'
-
-" Set proper path for C-Query.
-"let g:LanguageClient_serverCommands = {
-"\ 'cpp': ['/usr/local/bin/cquery',
-"\ '--log-file=/tmp/cq.log',
-"\ '--init={"cacheDirectory":"/tmp/cquery/","extraClangArguments":["-I/Library/Developer/CommandLineTools/usr/include/c++/v1"]}']
-"\ }
 
 let g:LanguageClient_serverCommands = {
 \ 'cpp': ['/usr/local/bin/cquery',
