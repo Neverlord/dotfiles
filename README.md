@@ -20,6 +20,10 @@ brew cask install vimr
 
 # LaTeX and UseLATEX environment
 brew install poppler imagemagick
+
+# Neovim bindings for Python
+pip install pynvim
+pip3 install pynvim
 ```
 
 Go to `System Preferences` > `Users & Groups` > `Advanced Options` and change
