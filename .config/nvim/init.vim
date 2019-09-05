@@ -1,30 +1,31 @@
 " -- general settings --------------------------------------------------------
 
-set background=light    " syntax highlighting for a bright terminal background
-set colorcolumn=80      " draw a line at 80 character limit
-set copyindent          " copy the structure of existing indentation
-set expandtab           " expand tabs to spaces
-set formatoptions=tcrqn " see :h 'fo-table for a detailed explanation
-set hidden              " allow for putting dirty buffers in background
-set ignorecase          " case-insensitive search
-set nojoinspaces        " don't insert two spaces when joining after [.?!]
-set nowrap              " disable auto-wrapping of lines
-set number              " show line number for the current position
-set relativenumber      " show line numbers relatively to current position
-set shiftwidth=2        " tab indention
-set smartcase           " override ignorecase when searching uppercase
+set background=light           " syntax highlighting bright terminal background
+set colorcolumn=80             " draw a line at 80 character limit
+set copyindent                 " copy the structure of existing indentation
+set expandtab                  " expand tabs to spaces
+set formatoptions=tcrqn        " see :h 'fo-table for a detailed explanation
+set hidden                     " allow for putting dirty buffers in background
+set ignorecase                 " case-insensitive search
+set nojoinspaces               " don't insert two spaces when joining strings
+set nowrap                     " disable auto-wrapping of lines
+set number                     " show line number for the current position
+set relativenumber             " show line numbers relatively position
+set shiftwidth=2               " tab indention
+set smartcase                  " override ignorecase when searching uppercase
 set spellfile=~/.vim/spellfile.add " share spellfile with Vim
-set spelllang=en,de     " german and english spell checking
-set tabstop=2           " number of spaces for a <Tab>
-set virtualedit=block   " support moving in empty space in block mode
+set spelllang=en,de           " german and english spell checking
+set tabstop=2                 " number of spaces for a <Tab>
+set virtualedit=block         " support moving in empty space in block mode
 
 let g:add_class_script_path=getcwd()."/add_class" " store path to add_class
+let g:find_in_files="tex,txt,md,cc,cpp,hh,hpp"    " file endings for :Find
 let g:load_doxygen_syntax=1                       " enable Doxygen higlight
 let g:solarized_termcolors=256                    " use wider color range
 
 colorscheme NeoSolarized
 
-" -- indentation tweaks -------------------------------------------------------
+" -- indentation tweaks ------------------------------------------------------
 
 " l1  = align with case label isntead of steatement after it in the same line.
 " N-s = Do not indent namespaces.
@@ -33,7 +34,7 @@ colorscheme NeoSolarized
 " W2  = ...but not if the last character in the line is an open parenthesis.
 set cinoptions=l1,N-s,t0,(0,W2
 
-" -- save/load hooks ----------------------------------------------------------
+" -- save/load hooks ---------------------------------------------------------
 
 " remove trailing spaces when saving a file
 autocmd BufWritePre * %s/\s\+$//e
@@ -42,21 +43,22 @@ autocmd BufWritePre * %s/\s\+$//e
 
 " Find a string in all *.hpp and *.cpp files
 function! F(what)
-  silent execute 'grep -R --exclude-dir=build --include="*.tex" --include="*.txt" --include="*.cc" --include="*.cpp" --include="*.hh" --include="*.hpp" "' . a:what . '" .'
+  silent execute "grep -R --exclude-dir=build '--include=*.'{" .
+  \              g:find_in_files . "} \"" . a:what . "\" ."
   execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
   execute "normal! :redraw!\<CR>"
 endfunction
 
 command! -nargs=* Find call F('<args>')
 
-" -- tool setup ---------------------------------------------------------------
+" -- tool setup --------------------------------------------------------------
 
 " rebind :make to Ninja if a Ninja build file exists
 if filereadable("./build/build.ninja") || filereadable("./build.ninja")
   set makeprg=ninja
 endif
 
-" -- key binding --------------------------------------------------------------
+" -- key binding -------------------------------------------------------------
 
 " rebind CTRL+B to build current project
 if filereadable("./build/build.ninja") || filereadable("./build/Makefile")
@@ -106,10 +108,10 @@ endif
 
 " -- auto commands -----------------------------------------------------------
 
-" Recognize doxygen comments in C++ files.
+" recognize doxygen comments in C++ files
 autocmd BufEnter,BufNew *.[hc]pp,*.hh,*.cc set comments=:///,://!,://
 
-" Enable spell checking for text files.
+" enable spell checking for text files
 autocmd Filetype tex,markdown set spell
 
 " -- plugins -----------------------------------------------------------------
