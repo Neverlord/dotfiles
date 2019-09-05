@@ -1,133 +1,31 @@
-" -- General settings --------------------------------------------------------
+" -- general settings --------------------------------------------------------
 
-set termguicolors
+set background=light    " syntax highlighting for a bright terminal background
+set colorcolumn=80      " draw a line at 80 character limit
+set copyindent          " copy the structure of existing indentation
+set expandtab           " expand tabs to spaces
+set formatoptions=tcrqn " see :h 'fo-table for a detailed explanation
+set hidden              " allow for putting dirty buffers in background
+set ignorecase          " case-insensitive search
+set nojoinspaces        " don't insert two spaces when joining after [.?!]
+set nowrap              " disable auto-wrapping of lines
+set number              " show line number for the current position
+set relativenumber      " show line numbers relatively to current position
+set shiftwidth=2        " tab indention
+set smartcase           " override ignorecase when searching uppercase
+set spellfile=~/.vim/spellfile.add " share spellfile with Vim
+set spelllang=en,de     " german and english spell checking
+set tabstop=2           " number of spaces for a <Tab>
+set virtualedit=block   " support moving in empty space in block mode
 
-set hidden              " Allow for putting dirty buffers in background.
-set ignorecase          " Case-insensitive search
-set smartcase           " Override ignorecase when searching uppercase.
-set modeline            " Enables modelines.
-set wildmode=longest,list:full " How to complete <Tab> matches.
-set virtualedit=block   " Support moving in empty space in block mode.
+let g:add_class_script_path=getcwd()."/add_class" " store path to add_class
+let g:load_doxygen_syntax=1                       " enable Doxygen higlight
+let g:solarized_termcolors=256                    " use wider color range
 
-" Low priority for these files in tab-completion.
-set suffixes+=.aux,.bbl,.blg,.dvi,.log,.pdf,.fdb_latexmk     " LaTeX
-set suffixes+=.info,.out,.o,.lo
+colorscheme NeoSolarized
 
-set viminfo='20,\"500
+" -- indentation tweaks -------------------------------------------------------
 
-" No header when printing.
-set printoptions+=header:0
-
-" No audible bell
-set visualbell
-set t_vb=
-
-" Remove trailing spaces when saving a file.
-autocmd BufWritePre * %s/\s\+$//e
-
-" Make sure we use a sane file format.
-scriptencoding utf-8
-
-" rebind :make to Ninja if a Ninja build file exists
-if filereadable("./build/build.ninja") || filereadable("./build.ninja")
-  set makeprg=ninja
-endif
-
-set printoptions=number:y
-
-" -- Key binding -------------------------------------------------------------
-
-" Rebind CTRL+B to build current project.
-if filereadable("./build/build.ninja") || filereadable("./build/Makefile")
-  map <C-B> :wa<CR>:make! -C build<CR>
-  inoremap <C-B> <ESC>:wa<CR>:make! -C build<CR>
-else
-  map <C-B> :wa<CR>:make!<CR>
-  inoremap <C-B> <ESC>:wa<CR>:make!<CR>
-endif
-
-" Rebind SHIFT+B to open build messages.
-noremap <S-B> :copen<CR><C-W><S-J>
-
-" Rebind CTRL+N for jumping to the next error/warning.
-map <C-N> :cnext<CR>
-
-" rebind CTRL+K for auto-formatting.
-if has('python3')
-  map <C-K> :py3f ~/.vim/modules/clang-format.py<CR>
-else
-  map <C-K> :py ~/.vim/modules/clang-format.py<CR>
-endif
-
-let mapleader = ' '
-
-" Clear last search highlighting.
-nnoremap <CR> :noh<CR><CR>
-
-" Toggle list mode (display unprintable characters).
-nnoremap <F11> :set list!<CR>
-
-" Avoid hitting <ESC> dozens of times a day.
-inoremap jk <ESC>
-
-" Toggle paste mode.
-set pastetoggle=<F12>
-
-" Highlight text last pasted.
-nnoremap <expr> <leader>p '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-" -- Leader shortcuts --------------------------------------------------------
-
-let mapleader=" "
-
-" rebind Leader+R to run current project via run.sh script
-nnoremap <leader>r :!./run.sh<CR>
-
-" rebind Leader+S for sorting a selected range
-xnoremap <leader>s :sort<CR>
-
-" -- Styling -----------------------------------------------------------------
-
-set colorcolumn=80      " Draw a line at 80 character limit"
-set background=light    " Syntax highlighting for a bright terminal background.
-set showbreak=…         " Highlight non-wrapped lines.
-set relativenumber
-set number
-set nowrap
-
-if has('gui_running')
-  set columns=80
-  set lines=25
-  set guioptions-=T   " Remove the toolbar.
-  set guifont=Anonymous\ Pro\ for\ Powerline:h12
-  "set transparency=5
-
-  " Disable MacVim-specific Cmd/Alt key mappings.
-  if has("gui_macvim")
-    let macvim_skip_cmd_opt_movement = 1
-  endif
-else
-  set t_Co=256        " We use 256 color terminal emulators these days.
-endif
-
-" Folding
-if version >= 600
-    set foldenable
-    set foldmethod=marker
-endif
-
-" -- Formatting --------------------------------------------------------------
-
-set formatoptions=tcrqn " See :h 'fo-table for a detailed explanation.
-set nojoinspaces        " Don't insert two spaces when joining after [.?!].
-set copyindent          " Copy the structure of existing indentation
-set expandtab           " Expand tabs to spaces.
-set tabstop=2           " number of spaces for a <Tab>.
-"set softtabstop=2       " Number of spaces that a <Tab> counts for.
-set shiftwidth=2        " Tab indention
-"set textwidth=79        " Text width
-
-" Indentation Tweaks.
 " l1  = align with case label isntead of steatement after it in the same line.
 " N-s = Do not indent namespaces.
 " t0  = do not indent a function's return type declaration.
@@ -135,18 +33,12 @@ set shiftwidth=2        " Tab indention
 " W2  = ...but not if the last character in the line is an open parenthesis.
 set cinoptions=l1,N-s,t0,(0,W2
 
-let g:load_doxygen_syntax=1 " Enable Doxygen syntax higlight
+" -- save/load hooks ----------------------------------------------------------
 
-" -- Spelling ----------------------------------------------------------------
+" remove trailing spaces when saving a file
+autocmd BufWritePre * %s/\s\+$//e
 
-if has("spell")
-  set spelllang=en,de
-  set spellfile=~/.vim/spellfile.add
-endif
-
-" -- Key Bindings ------------------------------------------------------------
-
-" -- Custom Functions --------------------------------------------------------
+" -- custom functions and commands -------------------------------------------
 
 " Find a string in all *.hpp and *.cpp files
 function! F(what)
@@ -157,176 +49,119 @@ endfunction
 
 command! -nargs=* Find call F('<args>')
 
-" map CTRL+F to ':Find ''
+" -- tool setup ---------------------------------------------------------------
+
+" rebind :make to Ninja if a Ninja build file exists
+if filereadable("./build/build.ninja") || filereadable("./build.ninja")
+  set makeprg=ninja
+endif
+
+" -- key binding --------------------------------------------------------------
+
+" rebind CTRL+B to build current project
+if filereadable("./build/build.ninja") || filereadable("./build/Makefile")
+  map <C-B> :wa<CR>:make! -C build<CR>
+  inoremap <C-B> <ESC>:wa<CR>:make! -C build<CR>
+else
+  map <C-B> :wa<CR>:make!<CR>
+  inoremap <C-B> <ESC>:wa<CR>:make!<CR>
+endif
+
+" rebind SHIFT+B to open build messages
+noremap <S-B> :copen<CR><C-W><S-J>
+
+" rebind CTRL+N for jumping to the next error/warning
+map <C-N> :cnext<CR>
+
+" rebind CTRL+K for auto-formatting via clang-format
+if has('python3')
+  map <C-K> :py3f ~/.vim/modules/clang-format.py<CR>
+else
+  map <C-K> :py ~/.vim/modules/clang-format.py<CR>
+endif
+
+" map CTRL+F to the custom command ':Find '
 map <C-F> <ESC>:Find<Space>
 imap <C-F> <ESC>:Find<Space>
 
-let g:addClassScript = getcwd() . "/add_class"
+" avoid hitting <ESC> dozens of times a day
+inoremap jk <ESC>
 
-if filereadable(g:addClassScript)
-  if has('python3')
-    python3 import sys, vim
-    python3 sys.argv = ["vim"]
-    execute "py3file " . g:addClassScript
-  else
-    python import sys, vim
-    python sys.argv = ["vim"]
-    execute "pyfile " . g:addClassScript
-  endif
-  let g:hasAddClass = 1
-else
-  let g:hasAddClass = 0
+" -- leader shortcuts --------------------------------------------------------
+
+let mapleader=" "
+
+" rebind Leader+R to run current project via run.sh script
+nnoremap <leader>r :!./run.sh<CR>
+
+" rebind Leader+S for sorting the selected range
+xnoremap <leader>s :sort<CR>
+
+if filereadable(g:add_class_script_path)
+  execute 'map <leader>n :! '.g:add_class_script_path.'<Space>'
 endif
 
-function! AddClassFun(name)
-  if g:hasAddClass
-    if has('python3')
-      py3 add_class_by_name(False, vim.eval('a:name'))
-    else
-      py add_class_by_name(False, vim.eval('a:name'))
-    endif
-    ClearAllCtrlPCaches
-  endif
-endfunction
+" -- auto commands -----------------------------------------------------------
 
-command! -nargs=* AddClass call AddClassFun('<args>')
+" Recognize doxygen comments in C++ files.
+autocmd BufEnter,BufNew *.[hc]pp,*.hh,*.cc set comments=:///,://!,://
 
-map <leader>n :AddClass
-
-function! Preserve(command)
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business.
-  execute a:command
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfunction
-
-" Customize solarized color scheme.
-let g:solarized_menu = 0
-let g:solarized_termtrans = 1
-let g:solarized_contrast = 'high'
-let g:solarized_contrast = 'high'
-let g:solarized_hitrail = 1
-if !has('gui_running')
-  let g:solarized_termcolors = 256
-end
-colorscheme NeoSolarized
-
-let vimrplugin_notmuxconf = 1 "do not overwrite an existing tmux.conf.
-let vimrplugin_assign = 0     "do not replace '_' with '<-'.
-let vimrplugin_vsplit = 1     "split R vertically.
-
-" -- Filetype Stuff ----------------------------------------------------------
-
-" R stuff
-autocmd BufNewFile,BufRead *.[rRsS] set ft=r
-autocmd BufRead *.R{out,history} set ft=r
-
-autocmd BufRead,BufNewFile *.dox      set filetype=doxygen
-autocmd BufRead,BufNewFile *.mail     set filetype=mail
-autocmd BufRead,BufNewFile *.bro      set filetype=bro
-autocmd BufRead,BufNewFile *.pac2     set filetype=ruby
-autocmd BufRead,BufNewFile *.ll       set filetype=llvm
-autocmd BufRead,BufNewFile *.kramdown set filetype=markdown
-autocmd BufRead,BufNewFile Portfile   set filetype=tcl
-
-" C++ comments
-autocmd FileType c,cpp setlocal comments=:///://!://
-
-" Bro-specific coding style.
-augroup BroProject
-  autocmd FileType bro set noexpandtab cino='>1s,f1s,{1s'
-  au BufRead,BufEnter ~/work/bro/**/*{cc,h} set noexpandtab cino='>1s,f1s,{1s'
-augroup END
-
-if has("spell")
-  autocmd BufRead,BufNewFile *.dox  set spell
-  autocmd Filetype mail             set spell
-  autocmd Filetype tex              set spell
-endif
+" Enable spell checking for text files.
+autocmd Filetype tex,markdown set spell
 
 " -- plugins -----------------------------------------------------------------
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-" Adds IDE-like file views in current path on the left.
+" adds IDE-like file views in current path on the left
 Plug 'scrooloose/nerdtree'
 
-" Allows fuzzy-search when opening files.
+" allows fuzzy-search when opening files
 Plug 'kien/ctrlp.vim'
 
-" Have CTRL+P scan all files in a directory.
-let g:ctrlp_max_files=0
+let g:ctrlp_custom_ignore = 'build/'  " ignore build directories
+let g:ctrlp_max_depth=20              " increase number of searched subfolders
+let g:ctrlp_max_files=0               " scan all files in a directory
+let g:ctrlp_root_markers = ['.ctrlp'] " go up until hitting a .ctrlp file
 
-" Recursively scan up to 100 directories.
-let g:ctrlp_max_depth=100
-
-" Ignore build directories in CTRLP.
-let g:ctrlp_custom_ignore = 'build/'
-
-" Scan for directories with a '.ctrlp' file as root.
-let g:ctrlp_root_markers = ['.ctrlp']
-
-" Disable caching.
-" let g:ctrlp_use_caching = 0
-
-" Adds auto-completion for brackets.
+" adds auto-completion for brackets
 Plug 'jiangmiao/auto-pairs'
 
-" Adds a status/tabline to VIM.
+" adds a status/tabline to VIM
 Plug 'vim-airline/vim-airline'
 
-" Themes for the status line.
+" themes for the status line
 Plug 'vim-airline/vim-airline-themes'
 
-" Prettify status line.
-let g:airline#extensions#tabline#enabled = 2
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline_theme= 'solarized'
+let g:airline#extensions#tabline#enabled=2     " show open buffers
+let g:airline#extensions#tabline#fnamemod=':t' " omit path to current file
+let g:airline_powerline_fonts=1                " use powerline symbols
+let g:airline_theme='solarized'                " fit our color scheme
 
-" Allows to easily add parens or quotes around selected text.
+" allows to easily add parens or quotes around selected text
 Plug 'tpope/vim-surround'
 
-" Allows swapping contents of splits.
-Plug 'wesQ3/vim-windowswap'
-
-" Integrates C-Query into VIM.
+" integrates C-Query into Neovim
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
 
-" Use the location-list for C-Query hits instead of the quickfix list.
-let g:LanguageClient_selectionUI = 'location-list'
 let g:LanguageClient_diagnosticsList = 'Location'
-
+let g:LanguageClient_selectionUI = 'location-list'
 let g:LanguageClient_serverCommands = {
 \ 'cpp': ['/usr/local/bin/cquery',
 \ '--log-file=/tmp/cq.log',
 \ '--init={"cacheDirectory":"/tmp/cquery/"}']
 \ }
 
-" Enables auto-completion via C-Query.
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" enable auto-completion via C-Query
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-" Use <tab> for auto-completion.
+" use <tab> for auto-completion
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
-" Always enable auto-completion.
-let g:deoplete#enable_at_startup = 1
-
-" Initialize deoplete variables.
-let g:deoplete#sources = get(g:,'deoplete#sources',{})
+let g:deoplete#enable_at_startup = 1                   " enable autocompletion
+let g:deoplete#sources = get(g:,'deoplete#sources',{}) " initialize variables
 
 call plug#end()
