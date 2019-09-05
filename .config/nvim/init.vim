@@ -87,6 +87,9 @@ imap <C-F> <ESC>:Find<Space>
 " avoid hitting <ESC> dozens of times a day
 inoremap jk <ESC>
 
+" automatically clear last search highlight whenever pressing <enter>
+nnoremap <CR> :noh<CR><CR>
+
 " -- leader shortcuts --------------------------------------------------------
 
 let mapleader=" "
