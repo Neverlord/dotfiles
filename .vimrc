@@ -75,7 +75,7 @@ map <C-N> :cnext<CR>
 if has('python3')
   map <C-K> :py3f ~/.vim/modules/clang-format.py<CR>
 else
-  map <C-K> :py ~/.vim/modules/clang-format.py<CR>
+  map <C-K> :pyf ~/.vim/modules/clang-format.py<CR>
 endif
 
 " map CTRL+F to the custom command ':Find '
