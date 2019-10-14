@@ -1,25 +1,27 @@
 " -- general settings --------------------------------------------------------
 
-set background=light           " syntax highlighting bright terminal background
-set colorcolumn=80             " draw a line at 80 character limit
-set copyindent                 " copy the structure of existing indentation
-set expandtab                  " expand tabs to spaces
-set formatoptions=tcrqn        " see :h 'fo-table for a detailed explanation
-set hidden                     " allow for putting dirty buffers in background
-set ignorecase                 " case-insensitive search
-set nojoinspaces               " don't insert two spaces when joining strings
-set nowrap                     " disable auto-wrapping of lines
-set number                     " show line number for the current position
-set relativenumber             " show line numbers relatively position
-set shiftwidth=2               " tab indention
-set smartcase                  " override ignorecase when searching uppercase
+set background=light               " bright terminal background
+set colorcolumn=80                 " draw a line at 80 character limit
+set copyindent                     " copy the structure of existing indentation
+set expandtab                      " expand tabs to spaces
+set formatoptions=tcrqn            " see :h 'fo-table
+set hidden                         " allow putting dirty buffers to background
+set ignorecase                     " case-insensitive search
+set listchars=eol:¶,tab:→ ,space:· " use more familiar 'visible characters'
+set nojoinspaces                   " avoid two spaces when joining strings
+set nowrap                         " disable auto-wrapping of lines
+set number                         " show line number for the current position
+set relativenumber                 " show line numbers relatively position
+set shiftwidth=2                   " tab indention
+set smartcase                      " override ignorecase when using uppercase
 set spellfile=~/.vim/spellfile.add " share spellfile with Vim
-set spelllang=en,de           " german and english spell checking
-set tabstop=2                 " number of spaces for a <Tab>
-set virtualedit=block         " support moving in empty space in block mode
+set spelllang=en,de                " german and english spell checking
+set tabstop=2                      " number of spaces for a <Tab>
+set textwidth=80                   " use 80 characters for wrapping
+set virtualedit=block              " support moving in empty space in block mode
 
 let g:add_class_script_path=getcwd()."/add_class" " store path to add_class
-let g:find_in_files="tex,txt,md,cc,cpp,hh,hpp"    " file endings for :Find
+let g:find_in_files="tex,txt,md,cc,cpp,hh,hpp,h"  " file endings for :Find
 let g:load_doxygen_syntax=1                       " enable Doxygen higlight
 let g:solarized_termcolors=256                    " use wider color range
 

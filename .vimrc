@@ -1,34 +1,36 @@
 " -- general settings --------------------------------------------------------
 
-set autoindent                 " start lines at consistent indent
-set background=light           " syntax highlighting bright terminal background
-set backspace=indent,eol,start " backspacing over everything in insert mode
-set colorcolumn=80             " draw a line at 80 character limit
-set copyindent                 " copy the structure of existing indentation
-set expandtab                  " expand tabs to spaces
-set formatoptions=tcrqn        " see :h 'fo-table for a detailed explanation
-set hidden                     " allow putting dirty buffers in background
-set history=1024               " longer command history
-set ignorecase                 " case-insensitive search
-set incsearch                  " jumps to search word as you type
-set modeline                   " enable modelines
-set nocompatible               " don't try to be compatible to Vi
-set nojoinspaces               " don't insert two spaces when joining strings
-set nowrap                     " disable auto-wrapping of lines
-set number                     " show line number for the current position
-set relativenumber             " show line numbers relatively position
-set shiftwidth=2               " tab indention
-set smartcase                  " override ignorecase when searching uppercase.
+set autoindent                     " start lines at consistent indent
+set background=light               " bright terminal background
+set backspace=indent,eol,start     " backspacing over everything in insert mode
+set colorcolumn=80                 " draw a line at 80 character limit
+set copyindent                     " copy the structure of existing indentation
+set expandtab                      " expand tabs to spaces
+set formatoptions=tcrqn            " see :h 'fo-table
+set hidden                         " allow putting dirty buffers in background
+set history=1024                   " longer command history
+set ignorecase                     " case-insensitive search
+set incsearch                      " jumps to search word as you type
+set listchars=eol:¶,tab:→ ,space:· " use more familiar 'visible characters'
+set modeline                       " enable modelines
+set nocompatible                   " don't try to be compatible to Vi
+set nojoinspaces                   " void two spaces when joining strings
+set nowrap                         " disable auto-wrapping of lines
+set number                         " show line number for the current position
+set relativenumber                 " show line numbers relatively position
+set shiftwidth=2                   " tab indention
+set smartcase                      " override ignorecase when using uppercase
 set spellfile=~/.vim/spellfile.add " file to our spelling file
-set spelllang=en,de            " german and english spell checking
-set t_vb=                      " no audible bell
-set tabstop=2                  " number of spaces for a <Tab>
-set virtualedit=block          " Support moving in empty space in block mode.
-set visualbell                 " enable visual bell
-set wildmode=longest,list:full " How to complete <Tab> matches.
-set t_Co=256                   " use wider color range
+set spelllang=en,de                " german and english spell checking
+set t_Co=256                       " use wider color range
+set t_vb=                          " no audible bell
+set tabstop=2                      " number of spaces for a <Tab>
+set textwidth=80                   " use 80 characters for wrapping
+set virtualedit=block              " move to empty spaces in block mode
+set visualbell                     " enable visual bell
+set wildmode=longest,list:full     " how to complete <Tab> matches
 
-let g:find_in_files="tex,txt,md,cc,cpp,hh,hpp"    " file endings for :Find
+let g:find_in_files="tex,txt,md,cc,cpp,hh,hpp,h"  " file endings for :Find
 let g:solarized_termcolors=256                    " use wider color range let
 
 scriptencoding utf-8           " make sure we use a sane file format
