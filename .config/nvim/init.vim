@@ -45,7 +45,7 @@ autocmd BufWritePre * %s/\s\+$//e
 
 " Find a string in all *.hpp and *.cpp files
 function! F(what)
-  silent execute "grep -R --exclude-dir=build '--include=*.'{" .
+  silent execute "grep -R --exclude-dir={build,bundle} '--include=*.'{" .
   \              g:find_in_files . "} \"" . a:what . "\" ."
   execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
   execute "normal! :redraw!\<CR>"
