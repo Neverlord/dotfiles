@@ -33,6 +33,7 @@ set wildmode=longest,list:full     " how to complete <Tab> matches
 if has("gui_running")
   colorscheme solarized
   set guifont=AnonymicePowerline:h13
+  set guicursor+=a:blinkon0
 endif
 
 let g:add_class_script_path=getcwd()."/add_class" " store path to add_class
