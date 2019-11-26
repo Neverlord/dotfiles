@@ -30,8 +30,15 @@ set virtualedit=block              " move to empty spaces in block mode
 set visualbell                     " enable visual bell
 set wildmode=longest,list:full     " how to complete <Tab> matches
 
+if has("gui_running")
+  colorscheme solarized
+  set guifont=AnonymicePowerline:h13
+endif
+
+let g:add_class_script_path=getcwd()."/add_class" " store path to add_class
 let g:find_in_files="tex,txt,md,cc,cpp,hh,hpp,h"  " file endings for :Find
-let g:solarized_termcolors=256                    " use wider color range let
+let g:load_doxygen_syntax=1                       " enable Doxygen hightlight
+let g:solarized_termcolors=256                    " use wider color range
 
 scriptencoding utf-8           " make sure we use a sane file format
 
@@ -51,15 +58,40 @@ autocmd BufWritePre * %s/\s\+$//e
 
 " -- custom functions and commands -------------------------------------------
 
-" Find a string in all *.hpp and *.cpp files
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --smart-case\ --no-ignore-vcs
+endif
+
 function! F(what)
-  silent execute "grep -R --exclude-dir={build,bundle} '--include=*.'{" .
-  \              g:find_in_files . "} \"" . a:what . "\" ."
-  execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
-  execute "normal! :redraw!\<CR>"
+  if executable('rg')
+    silent execute "grep '" . a:what . "' -g '\\!build' -g '\\!bundle' " .
+    \              "-g '\\!3rdparty' -g '*.{" . g:find_in_files . "}'"
+  else
+    silent execute "grep -R --exclude-dir={build,bundle} '--include=*.'{" .
+    \              g:find_in_files . "} \"" . a:what . "\" ."
+  endif
+ execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
+ execute "normal! :redraw!\<CR>"
 endfunction
 
+" Find a string in all source files
 command! -nargs=* Find call F('<args>')
+
+let g:default_style=1
+
+function ToggleTabStyle()
+  if g:default_style
+    set list
+    set tabstop=4
+    set noexpandtab
+    let g:default_style=0
+  else
+    set nolist
+    set tabstop=2
+    set expandtab
+    let g:default_style=1
+  endif
+endfunction
 
 " -- key binding -------------------------------------------------------------
 
@@ -100,6 +132,8 @@ nnoremap <leader>r :!./run.sh<CR>
 " rebind Leader+S for sorting a selected range
 xnoremap <leader>s :sort<CR>
 
+noremap <leader>z <ESC>:call ToggleTabStyle()<CR>
+
 " -- auto commands -----------------------------------------------------------
 
 " recognize doxygen comments in C++ files
@@ -116,12 +150,22 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 
 " allows fuzzy-search when opening files
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
-let g:ctrlp_custom_ignore = 'build/'  " ignore build directories
-let g:ctrlp_max_depth=20              " increase number of searched subfolders
-let g:ctrlp_max_files=0               " scan all files in a directory
-let g:ctrlp_root_markers = ['.ctrlp'] " go up until hitting a .ctrlp file
+let g:ctrlp_use_caching = 0
+let g:ctrlp_max_files = 0
+let g:ctrlp_root_markers = ['.ctrlp']
+if has('win32')
+  let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'
+else
+  if executable('rg')
+    let g:ctrlp_user_command = "rg %s --no-ignore-vcs --files --color=never " .
+    \                          "-g '!build' -g '!bundle' " .
+    \                          "-g '!3rdparty' -g '!*.swp'"
+  else
+    let g:ctrlp_user_command = 'find %s -type f'
+  endif
+endif
 
 " adds auto-completion for brackets
 Plug 'jiangmiao/auto-pairs'

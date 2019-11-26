@@ -71,7 +71,7 @@ function workspace_root() {
 }
 
 # Convenience alias for opening the workspace.
-alias "ws=(cd \$(workspace_root) && vimr)"
+alias "ws=(cd \$(workspace_root) && mvim)"
 
 # Convenience alias for piping log-formatted output to Vim.
 alias lvim="vim -c 'set syntax=log' -"
