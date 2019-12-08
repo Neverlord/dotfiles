@@ -135,6 +135,9 @@ xnoremap <leader>s :sort<CR>
 
 noremap <leader>z <ESC>:call ToggleTabStyle()<CR>
 
+if filereadable(g:add_class_script_path)
+  execute 'map <leader>n :! '.g:add_class_script_path.'<Space>'
+endif
 " -- auto commands -----------------------------------------------------------
 
 " recognize doxygen comments in C++ files
