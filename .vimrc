@@ -60,13 +60,14 @@ autocmd BufWritePre * %s/\s\+$//e
 " -- custom functions and commands -------------------------------------------
 
 if executable('rg')
-  set grepprg=rg\ --vimgrep\ --smart-case\ --no-ignore-vcs
+  set grepprg=rg\ --vimgrep\ --smart-case\ --no-ignore-vcs\ --sort\ path
 endif
 
 function! F(what)
   if executable('rg')
-    silent execute "grep '" . a:what . "' -g '\\!build' -g '\\!bundle' " .
-    \              "-g '\\!3rdparty' -g '*.{" . g:find_in_files . "}'"
+    silent execute "grep '" . a:what . "' -g '!build' -g '!bundle' " .
+    \              "-g '!3rdparty' -g '!zeek/aux' " .
+    \              "-g '*.{" . g:find_in_files . "}'"
   else
     silent execute "grep -R --exclude-dir={build,bundle} '--include=*.'{" .
     \              g:find_in_files . "} \"" . a:what . "\" ."
