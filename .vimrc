@@ -20,8 +20,9 @@ set number                         " show line number for the current position
 set relativenumber                 " show line numbers relatively position
 set shiftwidth=2                   " tab indention
 set smartcase                      " override ignorecase when using uppercase
+set spell                          " enable spell checking
 set spellfile=~/.vim/spellfile.add " file to our spelling file
-set spelllang=en,de                " german and english spell checking
+set spelllang=en_us,de             " US English and German spell checking
 set t_Co=256                       " use wider color range
 set t_vb=                          " no audible bell
 set tabstop=2                      " number of spaces for a <Tab>
@@ -36,16 +37,16 @@ if has("gui_running")
   set guicursor+=a:blinkon0
 endif
 
-let g:add_class_script_path=getcwd()."/add_class" " store path to add_class
-let g:find_in_files="tex,txt,md,cc,cpp,hh,hpp,h"  " file endings for :Find
-let g:load_doxygen_syntax=1                       " enable Doxygen hightlight
-let g:solarized_termcolors=256                    " use wider color range
+let g:add_class_script_path=getcwd()."/add_class"    " store path to add_class
+let g:find_in_files="tex,txt,md,cc,cpp,hh,hpp,h,rst" " file endings for :Find
+let g:load_doxygen_syntax=1                          " enable Doxygen hightlight
+let g:solarized_termcolors=256                       " use wider color range
 
 scriptencoding utf-8           " make sure we use a sane file format
 
 " -- indentation tweaks ------------------------------------------------------
 
-" l1  = align with case label isntead of steatement after it in the same line.
+" l1  = align with case label instead of statement after it in the same line.
 " N-s = Do not indent namespaces.
 " t0  = do not indent a function's return type declaration.
 " (0  = line up with next non-white character after unclosed parentheses...
@@ -66,11 +67,12 @@ endif
 function! F(what)
   if executable('rg')
     silent execute "grep '" . a:what . "' -g '!build' -g '!bundle' " .
-    \              "-g '!3rdparty' -g '!zeek/aux' " .
+    \              "-g '!3rdparty' -g '!aux' -g '!auxil' -g '!broker/caf' " .
     \              "-g '*.{" . g:find_in_files . "}'"
   else
-    silent execute "grep -R --exclude-dir={build,bundle} '--include=*.'{" .
-    \              g:find_in_files . "} \"" . a:what . "\" ."
+    silent execute "grep -R --exclude-dir={build,bundle,aux,auxil} " .
+    \              "'--include=*.'{" .
+    \              "g:find_in_files . "} \"" . a:what . "\" ."
   endif
  execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
  execute "normal! :redraw!\<CR>"
@@ -101,7 +103,7 @@ endfunction
 map <C-B> :wa<CR>:make!<CR>
 inoremap <C-B> <ESC>:wa<CR>:make!<CR>
 
-" rebind SHIFT+B to open build messages
+" rebind SHIFT+B to open quick fix (build messages)
 noremap <S-B> :copen<CR><C-W><S-J>
 
 " rebind CTRL+N for jumping to the next error/warning
@@ -144,8 +146,8 @@ endif
 " recognize doxygen comments in C++ files
 autocmd BufEnter,BufNew *.[hc]pp,*.hh,*.cc set comments=:///,://!,://
 
-" enable spell checking for text files
-autocmd Filetype tex,markdown set spell
+" " enable spell checking for text files
+" autocmd Filetype tex,markdown set spell
 
 " -- plugins -----------------------------------------------------------------
 
@@ -166,6 +168,9 @@ else
   if executable('rg')
     let g:ctrlp_user_command = "rg %s --no-ignore-vcs --files --color=never " .
     \                          "-g '!build' -g '!bundle' " .
+    \                          "-g '!broker/caf' " .
+    \                          "-g '!zeek/auxil' " .
+    \                          "-g '!zeek/aux' -g '!zeek-agent/libraries' " .
     \                          "-g '!3rdparty' -g '!*.swp'"
   else
     let g:ctrlp_user_command = 'find %s -type f'
