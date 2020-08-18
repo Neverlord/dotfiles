@@ -13,17 +13,7 @@ git init . && git remote add origin https://github.com/Neverlord/dotfiles.git &&
 
 ```
 # Libs and CLI tools.
-brew install bash cquery ninja clang-format hub stdman openssl gpg pass
-
-# GUI tools.
-brew cask install vimr
-
-# LaTeX and UseLATEX environment
-brew install poppler imagemagick
-
-# Neovim bindings for Python
-pip install pynvim
-pip3 install pynvim
+brew install bash ninja clang-format hub stdman openssl gpg pass
 ```
 
 Go to `System Preferences` > `Users & Groups` > `Advanced Options` and change
@@ -39,10 +29,8 @@ git config --global user.name "Dominik Charousset"
 git config --global user.email ...
 ```
 
-# Vim and NeoVim Setup
+# Vim Setup
 
 ```
 vim -c PlugInstall
-vimr # type ":PlugInstall"
 ```
-
