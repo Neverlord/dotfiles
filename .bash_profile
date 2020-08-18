@@ -19,6 +19,9 @@ export LSCOLORS="DxGxcxdxCxegedabagacad"
 # Increase size of bash history.
 export HISTFILESIZE=50000000
 
+# Add sphinx-build to the PATH
+export PATH="$PATH:/usr/local/opt/sphinx-doc/bin"
+
 # -- path setup ---------------------------------------------------------------
 
 # Tell BibteX where to find the bibliography databases.
