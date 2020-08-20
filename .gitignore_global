@@ -12,6 +12,7 @@
 .DS_Store
 CMakeLists.txt.user
 build/
+bundle/
 caf-application.conf
 caf-application.ini
 compile_commands.json
