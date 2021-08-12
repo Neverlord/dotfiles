@@ -44,6 +44,11 @@ let g:solarized_termcolors=256                       " use wider color range
 
 scriptencoding utf-8           " make sure we use a sane file format
 
+" -- proper mouse support
+
+set ttymouse=xterm2
+set mouse=a
+
 " -- indentation tweaks ------------------------------------------------------
 
 " l1  = align with case label instead of statement after it in the same line.
@@ -99,12 +104,13 @@ endfunction
 
 " -- key binding -------------------------------------------------------------
 
-" rebind CTRL+B to make
-map <C-B> :wa<CR>:make!<CR>
-inoremap <C-B> <ESC>:wa<CR>:make!<CR>
+" rebind CTRL+J to make
+noremap <C-J> :wa<CR>:make!<CR>
+inoremap <C-J> <ESC>:wa<CR>:make!<CR>
 
-" rebind SHIFT+B to open quick fix (build messages)
-noremap <S-B> :copen<CR><C-W><S-J>
+" rebind CTRL+H to open and move to the quick fix window (build messages)
+noremap <C-H> :copen<CR><C-W><S-J>
+inoremap <C-H> <ESC>:copen<CR><C-W><S-J>
 
 " rebind CTRL+N for jumping to the next error/warning
 map <C-N> :cnext<CR>
