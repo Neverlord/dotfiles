@@ -19,13 +19,13 @@ export LSCOLORS="DxGxcxdxCxegedabagacad"
 # Increase size of bash history.
 export HISTFILESIZE=50000000
 
-# Add sphinx-build to the PATH
-export PATH="$PATH:/usr/local/opt/sphinx-doc/bin"
-
 # -- path setup ---------------------------------------------------------------
 
 # Tell BibteX where to find the bibliography databases.
 export BIBINPUTS="$HOME/papers/bib"
+
+# Add $HOME/bin.
+export PATH=$HOME/bin:$PATH
 
 # Settings specific to macOS.
 if [ "$(uname)" == "Darwin" ] ; then
@@ -47,6 +47,14 @@ if [ "$(uname)" == "Darwin" ] ; then
   if [ "$have_icloud_drive" = true ]; then
     export PASSWORD_STORE_DIR=$HOME/iCloudDrive/.password-store
   fi
+fi
+
+if command -v python3 &>/dev/null ; then
+  export PATH="$PATH:$(python3 -c 'import site ; print(site.USER_BASE)')/bin"
+fi
+
+if which ruby >/dev/null && which gem >/dev/null; then
+    PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
 fi
 
 # -- custom commands and aliases ----------------------------------------------
