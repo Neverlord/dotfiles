@@ -59,6 +59,21 @@ fi
 
 # -- custom commands and aliases ----------------------------------------------
 
+function totp() {
+  key=$(pass $1/totp)
+  if [ "$?" = "0" ] ; then
+    token=$(oathtool --totp -b $key 2>/dev/null)
+    if [ "$?" = "0" ] ; then
+      printf "%s" "$token" | pbcopy
+      echo "copied code to clipboard"
+    else
+      echo "failed to run oathtool"
+    fi
+  else
+    echo "failed to access key"
+  fi
+}
+
 # Tries to find a workspace directory containing a `.ctrlp` stopper file.
 # Otherwise returns `PWD`.
 function workspace_root() {
