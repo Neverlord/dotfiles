@@ -10,13 +10,11 @@
 *.synctex.gz
 *.toc
 .DS_Store
-CMakeLists.txt.user
+.ctrlp
+.jekyll-cache/
 build/
 bundle/
 caf-application.conf
 caf-application.ini
 compile_commands.json
 tmp/
-vast-unit-test.log
-vast-unit-test/
-vast.ini

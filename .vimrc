@@ -86,6 +86,14 @@ endfunction
 " Find a string in all source files
 command! -nargs=* Find call F('<args>')
 
+function! AddChangeIdFun()
+  write
+  let newid = system("~/bin/generate-change-id " . expand('%:p'))
+  execute "normal! oChange-Id: " . newid . "\<ESC>"
+endfunction
+
+command! -nargs=0 AddChangeId call AddChangeIdFun()
+
 let g:default_style=1
 
 function ToggleTabStyle()
@@ -136,6 +144,9 @@ nnoremap <CR> :noh<CR><CR>
 
 let mapleader = ' '
 
+" map CTRL+G to add a Gerrit Change ID
+nnoremap <leader>g :AddChangeId<CR>
+
 " rebind Leader+R to run current project via run.sh script
 nnoremap <leader>r :!./run.sh<CR>
 
@@ -143,6 +154,8 @@ nnoremap <leader>r :!./run.sh<CR>
 xnoremap <leader>s :sort<CR>
 
 noremap <leader>z <ESC>:call ToggleTabStyle()<CR>
+
+noremap <leader>m :normal ysiw)istd::move<CR>
 
 if filereadable(g:add_class_script_path)
   execute 'map <leader>n :! '.g:add_class_script_path.'<Space>'
