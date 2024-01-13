@@ -25,7 +25,7 @@ export HISTFILESIZE=50000000
 export BIBINPUTS="$HOME/papers/bib"
 
 # Add $HOME/bin.
-export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin:$PATH:/opt/homebrew/bin
 
 # Settings specific to macOS.
 if [ "$(uname)" == "Darwin" ] ; then
