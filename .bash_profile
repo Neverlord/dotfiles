@@ -19,6 +19,13 @@ export LSCOLORS="DxGxcxdxCxegedabagacad"
 # Increase size of bash history.
 export HISTFILESIZE=50000000
 
+# Have make use some sane default.
+if [ "$(uname)" == "Darwin" ] ; then
+  export MAKEFLAGS="-j$(sysctl -n hw.ncpu)"
+else
+  export MAKEFLAGS="-j$(nproc --all)"
+fi
+
 # -- path setup ---------------------------------------------------------------
 
 # Tell BibteX where to find the bibliography databases.
