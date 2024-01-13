@@ -22,7 +22,7 @@ set shiftwidth=2                   " tab indention
 set smartcase                      " override ignorecase when using uppercase
 set spell                          " enable spell checking
 set spellfile=~/.vim/spellfile.add " file to our spelling file
-set spelllang=en_us,de             " US English and German spell checking
+set spelllang=en_us                " US English and German spell checking
 set t_Co=256                       " use wider color range
 set t_vb=                          " no audible bell
 set tabstop=2                      " number of spaces for a <Tab>
@@ -38,16 +38,16 @@ if has("gui_running")
 endif
 
 let g:add_class_script_path=getcwd()."/add_class"    " store path to add_class
-let g:find_in_files="tex,txt,md,cc,cpp,hh,hpp,h,rst" " file endings for :Find
 let g:load_doxygen_syntax=1                          " enable Doxygen hightlight
 let g:solarized_termcolors=256                       " use wider color range
 
 scriptencoding utf-8           " make sure we use a sane file format
+set encoding=utf-8
 
-" -- proper mouse support
-
-set ttymouse=xterm2
-set mouse=a
+" " -- proper mouse support
+"
+" set ttymouse=xterm2
+" set mouse=a
 
 " -- indentation tweaks ------------------------------------------------------
 
@@ -72,15 +72,35 @@ endif
 function! F(what)
   if executable('rg')
     silent execute "grep '" . a:what . "' -g '!build' -g '!bundle' " .
-    \              "-g '!3rdparty' -g '!aux' -g '!auxil' -g '!broker/caf' " .
-    \              "-g '*.{" . g:find_in_files . "}'"
+    \              "-g '!3rdparty' -g '!aux' -g '!auxil' -g '!broker/caf'"
   else
     silent execute "grep -R --exclude-dir={build,bundle,aux,auxil} " .
-    \              "'--include=*.'{" .
-    \              "g:find_in_files . "} \"" . a:what . "\" ."
+    \              "\"" . a:what . "\" ."
   endif
  execute "normal! \<C-O>:copen\<CR>\<C-W>\<S-J>"
  execute "normal! :redraw!\<CR>"
+endfunction
+
+function DoCodeFormatting()
+  if &modified
+    write
+  endif
+  let current_file = expand('%')
+  if &ft == 'cpp'
+    if has('python3')
+      execute "py3f ~/.vim/modules/clang-format.py"
+    else
+      execute "pyf ~/.vim/modules/clang-format.py"
+    endif
+  elseif &ft == 'robot'
+    execute 'silent !robotidy ' . current_file
+    execute "edit!"
+    execute "redraw!"
+  elseif &ft == 'cmake'
+    execute 'silent !cmake-format -i ' . current_file
+    execute "edit!"
+    execute "redraw!"
+  endif
 endfunction
 
 " Find a string in all source files
@@ -124,11 +144,7 @@ inoremap <C-H> <ESC>:copen<CR><C-W><S-J>
 map <C-N> :cnext<CR>
 
 " rebind CTRL+K for auto-formatting via clang-format
-if has('python3')
-  map <C-K> :py3f ~/.vim/modules/clang-format.py<CR>
-else
-  map <C-K> :pyf ~/.vim/modules/clang-format.py<CR>
-endif
+map <C-K> :call DoCodeFormatting()<CR>
 
 " map CTRL+F to the custom command ':Find '
 map <C-F> <ESC>:Find<Space>
@@ -147,9 +163,6 @@ let mapleader = ' '
 " map CTRL+G to add a Gerrit Change ID
 nnoremap <leader>g :AddChangeId<CR>
 
-" rebind Leader+R to run current project via run.sh script
-nnoremap <leader>r :!./run.sh<CR>
-
 " rebind Leader+S for sorting a selected range
 xnoremap <leader>s :sort<CR>
 
@@ -163,10 +176,48 @@ endif
 " -- auto commands -----------------------------------------------------------
 
 " recognize doxygen comments in C++ files
-autocmd BufEnter,BufNew *.[hc]pp,*.hh,*.cc set comments=:///,://!,://
+autocmd BufEnter,BufNew *.[hc]pp,*.hh,*.cc set comments=:///,://!,://,s1:/**,mb:*,ex:*/,s1:/*,mb:*,ex:*/
 
 " " enable spell checking for text files
 " autocmd Filetype tex,markdown set spell
+
+" enable syntax highlighting for robot files
+autocmd BufRead,BufNewFile *.robot set filetype=robot
+
+" -- settings for language server (coc) --------------------------------------
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved
+set signcolumn=yes
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+" Symbol renaming
+nmap <leader>r <Plug>(coc-rename)
 
 " -- plugins -----------------------------------------------------------------
 
@@ -213,4 +264,18 @@ let g:airline_theme='solarized'                " fit our color scheme
 " allows to easily add parens or quotes around selected text
 Plug 'tpope/vim-surround'
 
+" hassle-free session management
+Plug 'tpope/vim-obsession'
+
+" GitHub co-pilot.
+Plug 'github/copilot.vim'
+
+let g:copilot_filetypes = { 'markdown': v:true, }
+
+" language server protocol
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 call plug#end()
+
+" map CTRL+U/I to navigate copilot suggestions
+inoremap <C-U> <Plug>(copilot-next)
