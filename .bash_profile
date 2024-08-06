@@ -26,13 +26,18 @@ else
   export MAKEFLAGS="-j$(nproc --all)"
 fi
 
+# Have CTest print output on failure.
+CTEST_OUTPUT_ON_FAILURE=ON
+
 # -- path setup ---------------------------------------------------------------
 
 # Tell BibteX where to find the bibliography databases.
 export BIBINPUTS="$HOME/papers/bib"
 
-# Add $HOME/bin.
-export PATH=$HOME/bin:$PATH:/opt/homebrew/bin
+# Add extra directories to the PATH.
+export PATH="$HOME/bin:/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="/opt/homebrew/opt/sphinx-doc/bin:$PATH"
 
 # Settings specific to macOS.
 if [ "$(uname)" == "Darwin" ] ; then
@@ -65,6 +70,8 @@ if which ruby >/dev/null && which gem >/dev/null; then
 fi
 
 # -- custom commands and aliases ----------------------------------------------
+
+alias code="open -a 'Visual Studio Code'"
 
 function totp() {
   key=$(pass $1/totp)

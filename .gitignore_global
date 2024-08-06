@@ -12,6 +12,7 @@
 .DS_Store
 .ctrlp
 .jekyll-cache/
+.vscode/
 build/
 bundle/
 caf-application.conf
