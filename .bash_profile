@@ -29,6 +29,9 @@ fi
 # Have CTest print output on failure.
 CTEST_OUTPUT_ON_FAILURE=ON
 
+# Prefer Ninja over Make for CMake builds.
+export CMAKE_GENERATOR=Ninja
+
 # -- path setup ---------------------------------------------------------------
 
 # Tell BibteX where to find the bibliography databases.
