@@ -91,31 +91,6 @@ function totp() {
   fi
 }
 
-# Tries to find a workspace directory containing a `.ctrlp` stopper file.
-# Otherwise returns `PWD`.
-function workspace_root() {
-  if [ -f ".ctrlp" ]; then
-    echo "$PWD"
-    return 0
-  fi
-  if [ -d "$PWD/workspace" ]; then
-    echo "$PWD/workspace"
-    return 0
-  fi
-  local path="$(dirname $PWD)"
-  while [ "$path" != '/' ]; do
-    if [ -f "$path/.ctrlp" ]; then
-      echo "$path"
-      return 0
-    fi
-    path="$(dirname $path)"
-  done
-  echo "$PWD"
-}
-
-# Convenience alias for opening the workspace.
-alias "ws=(cd \$(workspace_root) && mvim)"
-
 # Convenience alias for piping log-formatted output to Vim.
 alias lvim="vim -c 'set syntax=log' -"
 
@@ -123,7 +98,7 @@ alias lvim="vim -c 'set syntax=log' -"
 
 # Generates a nice Git prompt for the current branch.
 function _git_prompt() {
-  local git_status="`git status -unormal 2>&1`"
+  local git_status="`git status -uno 2>&1`"
   if ! [[ "$git_status" =~ not\ a\ git\ repo ]]; then
     if [[ "$git_status" =~ nothing\ to\ commit ]]; then
       local ansi=32
